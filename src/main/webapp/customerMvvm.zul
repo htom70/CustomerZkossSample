@@ -1,0 +1,40 @@
+<window title="Customer Administration" border="normal"  hflex="1" vflex="1" contentStyle="overflow:auto"
+
+        viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')">
+    <hbox align="center">
+        Name:
+        <textbox value="@bind(vm.customerName)" constraint="no empty: Please enter your full name"/>
+        Address:
+        <textbox value="@bind(vm.customerAddress)" constraint="no empty: Please enter your Address"/>
+        Phone Number:
+        <textbox value="@bind(vm.customerPhoneNumber)" constraint="no empty, /\+([0-9]){11}/ : Please enter an valid Phone Number (+36701234567)"/>
+        <button label="Create"  onClick="@command('create')"/>
+
+    </hbox>
+    <listbox width="60%" rows="10" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
+             selectedItem="@save(vm.selectedCustomer)">
+        <listhead>
+            <!--			<listheader label="Id" />-->
+            <listheader align="center" width="20%" label="Name"/>
+            <listheader align="center" width="20%" label="Address"/>
+            <listheader align="center" width="20%" label="Phone Number"/>
+        </listhead>
+        <template name="model">
+            <listitem>
+                <!--				<listcell>$<label value="@init(each.Id)" />l</listcell>-->
+                <listcell label="@init(each.name)"></listcell>
+                <listcell  label="@init(each.address)"></listcell>
+                <listcell  label="@init(each.phoneNumber)"></listcell>
+            </listitem>
+        </template>
+    </listbox>
+    <hbox style="margin-top:20px">
+        <vbox>
+            <textbox value="@bind(vm.selectedCustomer.name)"/>
+            <textbox value="@bind(vm.selectedCustomer.address)"/>
+            <textbox value="@bind(vm.selectedCustomer.phoneNumber)"/>
+            <button label="Modify" onClick="@command('update')"/>
+            <button label="Delete" onClick="@command('delete')"/>
+        </vbox>
+    </hbox>
+</window>

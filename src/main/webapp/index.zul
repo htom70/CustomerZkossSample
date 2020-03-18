@@ -1,0 +1,7 @@
+<zk>
+    <window border="normal" title="Get ZK Up and Running">
+        <vlayout>
+            <a href="customerMvvm.zul">CustomerMvvm.zul</a>
+        </vlayout>
+    </window>
+</zk>

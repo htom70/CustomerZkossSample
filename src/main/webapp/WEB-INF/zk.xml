@@ -1,0 +1,28 @@
+<zk xmlns="http://www.zkoss.org/2005/zk/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zk/config http://www.zkoss.org/2005/zk/config/zk.xsd">
+
+    <listener>
+        <listener-class>hu.userrendszerhaz.listener.ZKContextListener</listener-class>
+    </listener>
+
+    <library-property>
+        <name>org.zkoss.web.preferred.locale</name>
+        <value>hu</value>
+    </library-property>
+
+
+    <session-config>
+        <device-type>ajax</device-type>
+        <timeout-message>Lejárt a munkamenet, kérem töltse be újra az alkalmazást.</timeout-message>
+        <!-- timeout-uri>/timeout.zul</timeout-uri -->
+<!--        <automatic-timeout/>-->
+        <!-- masodpercben -->
+        <!--<session-timeout>900</session-timeout> -->
+    </session-config>
+
+    <system-config>
+<!--        <label-location>/resources/i3-label_hu.properties</label-location>-->
+        <!-- kilobytes -->
+        <max-upload-size>20000</max-upload-size>
+    </system-config>
+
+</zk>
