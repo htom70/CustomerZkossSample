@@ -8,10 +8,29 @@
 			<apply templateURI="sidebar.zul"/>
 		</west>
 		<center id="mainContent" autoscroll="true">
-			<vbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" >
-				<image src="/imgs/zklogo2.png" />
-				<label value="Chapter 4" sclass="head1"/>
-			</vbox>
+<!--			<grid>-->
+<!--				<columns sizable="true">-->
+<!--					<column label="New Customer"/>-->
+<!--					<column label="Show Customers"/>-->
+<!--					<column label="Modify Customer"/>-->
+<!--				</columns>-->
+<!--				<rows>-->
+<!--					<row>-->
+<!--						<apply templateURI="add-customer-mvvm.zul"/>-->
+<!--					</row>-->
+<!--					<row>-->
+<!--						<apply templateURI="add-customer-mvvm.zul"/>-->
+<!--					</row>-->
+<!--					<row>-->
+<!--						<apply templateURI="add-customer-mvvm.zul"/>-->
+<!--					</row>-->
+<!--				</rows>-->
+<!--			</grid>-->
+			<hbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" >
+				<apply templateURI="add-customer-mvvm.zul"/>
+				<apply templateURI="show-customer-mvvm.zul"/>
+				<apply templateURI="modify-customer-mvvm.zul"/>
+			</hbox>
 		</center>
 		<south height="50px" border="none">
 			<apply templateURI="footer.zul"/>

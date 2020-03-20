@@ -1,0 +1,49 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')"
+        border="normal" hflex="2" vflex="1" contentStyle="overflow:auto"
+>
+    <caption src="/imgs/profile.png" sclass="fn-caption" label="SHOW CUSTOMERS"/>
+    <vlayout>
+
+        <listbox width="100%" rows="10" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
+                 selectedItem="@bind(vm.selectedCustomer)">
+            <listhead>
+                <!--			<listheader label="Id" />-->
+                <listheader align="center" width="16%" label="Name"/>
+                <listheader align="center" width="16%" label="Address"/>
+                <listheader align="center" width="16%" label="Phone Number"/>
+                <listheader align="center" width="16%" label="E-mail Address"/>
+                <listheader align="center" width="16%" label="Birthday"/>
+                <listheader align="center" width="16%" label="Country"/>
+            </listhead>
+            <template name="model">
+                <listitem>
+                    <!--				<listcell>$<label value="@init(each.Id)" />l</listcell>-->
+                    <listcell label="@init(each.name)"></listcell>
+                    <listcell label="@init(each.address)"></listcell>
+                    <listcell label="@init(each.phoneNumber)"></listcell>
+                    <listcell label="@init(each.email)"></listcell>
+                    <listcell label="@init(each.birthday)"></listcell>
+                    <listcell label="@init(each.country)"></listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </vlayout>
+    <button onClick="@command('read')" label="Read"/>
+    <hbox style="margin-top:20px">
+        <vbox>
+<!--            <textbox value="@bind(vm.selectedCustomer.name)"/>-->
+<!--            <textbox value="@bind(vm.selectedCustomer.address)"/>-->
+<!--            <textbox value="@bind(vm.selectedCustomer.phoneNumber)"/>-->
+<!--            <textbox value="@bind(vm.selectedCustomer.email)"/>-->
+<!--            <textbox value="@bind(vm.selectedCustomer.birthday)"/>-->
+<!--            <textbox value="@bind(vm.selectedCustomer.country)"/>-->
+            <button label="Modify" onClick="@command('update', page='/pages/new.zul')"/>
+            <button label="Delete" onClick="@command('delete')"/>
+            <button label="Új felvitel" onClick="@command('showDialog', page='/pages/new.zul')"/>
+            <button label="Részletek" onClick="@command('showDialog', page='/pages/details.zul')"/>
+
+        </vbox>
+    </hbox>
+    <include id="dialoginclude" src="@load(vm.dialogPage)"/>
+</window>

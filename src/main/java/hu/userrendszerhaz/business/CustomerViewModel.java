@@ -1,10 +1,15 @@
 package hu.userrendszerhaz.business;
 
 import hu.userrendszerhaz.domain.Customer;
+import hu.userrendszerhaz.service.CountryInfoService;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,12 +18,17 @@ public class CustomerViewModel {
     private String customerName;
     private String customerAddress;
     private String customerPhoneNumber;
+    private String customerEmail;
+    private Date customerBirthday;
+    private String customerCountry;
     private Customer customer;
-    private List<Customer> customerList = new LinkedList<>();
+    private String dialogPage;
+    private List<Customer> customerList = new ListModelList<>();
     private Customer selectedCustomer;
 
     public CustomerViewModel() {
         loadCustomers();
+//        dialogPage="/pages/empty.zul";
     }
 
     public String getCustomerName() {
@@ -69,37 +79,76 @@ public class CustomerViewModel {
         this.customer = customer;
     }
 
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public Date getCustomerBirthday() {
+        return customerBirthday;
+    }
+
+    public void setCustomerBirthday(Date customerBirthday) {
+        this.customerBirthday = customerBirthday;
+    }
+
+    public String getCustomerCountry() {
+        return customerCountry;
+    }
+
+    public void setCustomerCountry(String customerCountry) {
+        this.customerCountry = customerCountry;
+    }
+
+    public String getDialogPage() {
+        return dialogPage;
+    }
+
+    public void setDialogPage(String dialogPage) {
+        this.dialogPage = dialogPage;
+    }
+
     private Listbox customerListbox;
 
-//    private List<Customer> customerList = new LinkedList<>();
+    //    private List<Customer> customerList = new LinkedList<>();
     private CustomerService customerService = new CustomerServiceImpl();
+
+    public List<String> getCountryList(){
+        return CountryInfoService.getCountryList();
+    }
 
     private static void initFrontend() {
     }
 
     @Command
-    @NotifyChange({"customerList","customerName","customerAddress","customerPhoneNumber"})
-    public void create() {
-        customer = new Customer(customerName, customerAddress, customerPhoneNumber);
+    @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber","customerEmail", "customerBirthday", "customerCountry"})
+    public void save() {
+        customer = new Customer(customerName, customerAddress, customerPhoneNumber, customerEmail, customerBirthday,customerCountry);
         customerService.create(customer);
-        loadCustomers();
+//        loadCustomers();
         customerName = null;
         customerAddress = null;
         customerPhoneNumber = null;
-            }
+        customerEmail = null;
+        customerBirthday = null;
+        customerCountry=null;
+    }
 
     @Command
-    @NotifyChange({"customerList", "selectedCustomer"})
-    public void update() {
+    @NotifyChange({"customerList", "selectedCustomer","dialogPage"})
+    public void update(@BindingParam("page") String page) {
         customerService.update(selectedCustomer);
-        selectedCustomer = null;
-        loadCustomers();
+        this.dialogPage = page;
+//        loadCustomers();
     }
 
 
     @Command
     @NotifyChange("customerList")
-    public void read(){
+    public void read() {
         loadCustomers();
     }
 
@@ -108,8 +157,15 @@ public class CustomerViewModel {
     public void delete() {
         customerService.delete(selectedCustomer);
         selectedCustomer = null;
-        loadCustomers();
+//        loadCustomers();
     }
+
+    @Command
+    @NotifyChange({"dialogPage"})
+    public void showDialog(@BindingParam("page") String page){
+        this.dialogPage = page;
+    }
+
 
     private void loadCustomers() {
         customerList = customerService.findAllCustomers();
