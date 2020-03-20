@@ -1,0 +1,11 @@
+<div hflex="1" sclass="banner">
+	<hbox hflex="1" align="center">
+
+		<div width="1000px">
+			<label value="Customer Administration" sclass="banner-head" />
+		</div>
+		<hbox hflex="1" vflex="1" pack="end" align="end">
+			TOM
+		</hbox>
+	</hbox>
+</div>

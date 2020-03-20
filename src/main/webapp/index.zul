@@ -1,7 +1,20 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
 <zk>
-    <window border="normal" title="Get ZK Up and Running">
-        <vlayout>
-            <a href="customerMvvm.zul">CustomerMvvm.zul</a>
-        </vlayout>
-    </window>
+	<borderlayout hflex="1" vflex="1">
+		<north height="100px" border="none" >
+			<apply templateURI="banner.zul"/>
+		</north>
+		<west width="260px" border="none" collapsible="true" splittable="true" minsize="300">
+			<apply templateURI="sidebar.zul"/>
+		</west>
+		<center id="mainContent" autoscroll="true">
+			<vbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" >
+				<image src="/imgs/zklogo2.png" />
+				<label value="Chapter 4" sclass="head1"/>
+			</vbox>
+		</center>
+		<south height="50px" border="none">
+			<apply templateURI="footer.zul"/>
+		</south>
+	</borderlayout>
 </zk>
