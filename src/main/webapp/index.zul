@@ -1,37 +1,21 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <zk>
+	<custom-attributes org.zkoss.zul.image.preload="true"/>
 	<borderlayout hflex="1" vflex="1">
 		<north height="100px" border="none" >
-			<apply templateURI="banner.zul"/>
+			<apply templateURI="/banner.zul"/>
 		</north>
-		<west width="260px" border="none" collapsible="true" splittable="true" minsize="300">
-			<apply templateURI="sidebar.zul"/>
-		</west>
+<!--		<west width="260px" border="none" collapsible="true" splittable="true" minsize="300">-->
+<!--			<apply templateURI="sidebar.zul"/>-->
+<!--		</west>-->
 		<center id="mainContent" autoscroll="true">
-<!--			<grid>-->
-<!--				<columns sizable="true">-->
-<!--					<column label="New Customer"/>-->
-<!--					<column label="Show Customers"/>-->
-<!--					<column label="Modify Customer"/>-->
-<!--				</columns>-->
-<!--				<rows>-->
-<!--					<row>-->
-<!--						<apply templateURI="add-customer-mvvm.zul"/>-->
-<!--					</row>-->
-<!--					<row>-->
-<!--						<apply templateURI="add-customer-mvvm.zul"/>-->
-<!--					</row>-->
-<!--					<row>-->
-<!--						<apply templateURI="add-customer-mvvm.zul"/>-->
-<!--					</row>-->
-<!--				</rows>-->
-<!--			</grid>-->
-			<hbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" >
-				<apply templateURI="add-customer-mvvm.zul"/>
+			<vbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" >
 				<apply templateURI="show-customer-mvvm.zul"/>
-				<apply templateURI="modify-customer-mvvm.zul"/>
-			</hbox>
+			</vbox>
 		</center>
+<!--		<east width="200px" border="none" collapsible="true" splittable="true" minsize="200">-->
+<!--			EAST-->
+<!--		</east>-->
 		<south height="50px" border="none">
 			<apply templateURI="footer.zul"/>
 		</south>

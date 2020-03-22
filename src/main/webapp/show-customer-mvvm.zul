@@ -5,7 +5,7 @@
     <caption src="/imgs/profile.png" sclass="fn-caption" label="SHOW CUSTOMERS"/>
     <vlayout>
 
-        <listbox width="100%" rows="10" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
+        <listbox width="100%" rows="3" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
                  selectedItem="@bind(vm.selectedCustomer)">
             <listhead>
                 <!--			<listheader label="Id" />-->
@@ -15,6 +15,9 @@
                 <listheader align="center" width="16%" label="E-mail Address"/>
                 <listheader align="center" width="16%" label="Birthday"/>
                 <listheader align="center" width="16%" label="Country"/>
+                <listheader align="center" width="16%" label="Edit"/>
+                <listheader align="center" width="16%" label="Delete"/>
+
             </listhead>
             <template name="model">
                 <listitem>
@@ -25,24 +28,15 @@
                     <listcell label="@init(each.email)"></listcell>
                     <listcell label="@init(each.birthday)"></listcell>
                     <listcell label="@init(each.country)"></listcell>
+                    <listcell iconSclass="z-icon-fw z-icon-edit" onClick="@command('showDialog', page='/pages/details.zul')"/>
+                    <listcell iconSclass="z-icon-fw z-icon-trash" onClick="@command('delete')"/>
                 </listitem>
             </template>
         </listbox>
     </vlayout>
-    <button onClick="@command('read')" label="Read"/>
     <hbox style="margin-top:20px">
         <vbox>
-<!--            <textbox value="@bind(vm.selectedCustomer.name)"/>-->
-<!--            <textbox value="@bind(vm.selectedCustomer.address)"/>-->
-<!--            <textbox value="@bind(vm.selectedCustomer.phoneNumber)"/>-->
-<!--            <textbox value="@bind(vm.selectedCustomer.email)"/>-->
-<!--            <textbox value="@bind(vm.selectedCustomer.birthday)"/>-->
-<!--            <textbox value="@bind(vm.selectedCustomer.country)"/>-->
-            <button label="Modify" onClick="@command('update', page='/pages/new.zul')"/>
-            <button label="Delete" onClick="@command('delete')"/>
-            <button label="Új felvitel" onClick="@command('showDialog', page='/pages/new.zul')"/>
-            <button label="Részletek" onClick="@command('showDialog', page='/pages/details.zul')"/>
-
+            <button label="Add Customer" onClick="@command('showDialog', page='/pages/new.zul')"/>
         </vbox>
     </hbox>
     <include id="dialoginclude" src="@load(vm.dialogPage)"/>

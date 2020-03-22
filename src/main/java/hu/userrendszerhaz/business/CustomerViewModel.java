@@ -4,13 +4,11 @@ import hu.userrendszerhaz.domain.Customer;
 import hu.userrendszerhaz.service.CountryInfoService;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 public class CustomerViewModel {
@@ -124,17 +122,19 @@ public class CustomerViewModel {
     }
 
     @Command
-    @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber","customerEmail", "customerBirthday", "customerCountry"})
-    public void save() {
+    @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber","customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
+    public void save(@BindingParam("page") String page) {
         customer = new Customer(customerName, customerAddress, customerPhoneNumber, customerEmail, customerBirthday,customerCountry);
         customerService.create(customer);
-//        loadCustomers();
-        customerName = null;
-        customerAddress = null;
-        customerPhoneNumber = null;
-        customerEmail = null;
-        customerBirthday = null;
-        customerCountry=null;
+        this.dialogPage = page;
+        loadCustomers();
+//        customerName = null;
+//        customerAddress = null;
+//        customerPhoneNumber = null;
+//        customerEmail = null;
+//        customerBirthday = null;
+//        customerCountry=null;
+
     }
 
     @Command
@@ -157,12 +157,13 @@ public class CustomerViewModel {
     public void delete() {
         customerService.delete(selectedCustomer);
         selectedCustomer = null;
-//        loadCustomers();
+        loadCustomers();
     }
 
     @Command
-    @NotifyChange({"dialogPage"})
+    @NotifyChange({"dialogPage","selectedCustomer"})
     public void showDialog(@BindingParam("page") String page){
+
         this.dialogPage = page;
     }
 

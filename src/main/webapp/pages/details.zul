@@ -1,5 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')"
+<window
+
         title="Customer modification"  visible="true" mode="modal" minimizable="false"
         border="normal" position="center,center" closable="true" action="show: slideDown;hide: slideUp" onClose="@command('showDialog', page='/pages/empty.zul')">
     <vlayout>
@@ -19,28 +20,28 @@
                 <row>
                     <cell sclass="row-title">Address :</cell>
                     <cell>
-                        <textbox value="@save(vm.selectedCustomer.address)" width="200px"
+                        <textbox value="@bind(vm.selectedCustomer.address)" width="200px"
                                  constraint="no empty: Please enter your Address"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">Phone Number :</cell>
                     <cell>
-                        <textbox value="@save(vm.selectedCustomer.phoneNumber)" width="200px"
+                        <textbox value="@bind(vm.selectedCustomer.phoneNumber)" width="200px"
                                  constraint="no empty, /\+([0-9]){11}/ : Please enter an valid Phone Number (+36701234567)"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">Email :</cell>
                     <cell>
-                        <textbox value="@save(vm.selectedCustomer.email)" width="200px"
+                        <textbox value="@bind(vm.selectedCustomer.email)" width="200px"
                                  constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">Birthday :</cell>
                     <cell>
-                        <datebox value="@save(vm.selectedCustomer.birthday)" width="200px"
+                        <datebox value="@bind(vm.selectedCustomer.birthday)" width="200px"
                                  constraint="no future"/>
                     </cell>
                 </row>
@@ -60,8 +61,8 @@
         <div>You are editing<label value="@load(vm.selectedCustomer.name)"/>'s profile.
         </div>
         <hlayout>
-            <button label="Elment" onClick="@command('update', page='/pages/empty.zul')" />
-            <button label="Mégsem" onClick="@command('showDialog', page='/pages/empty.zul')" />
+            <button label="Save" onClick="@command('update', page='/pages/empty.zul')" />
+            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')" />
         </hlayout>
     </vlayout>
 </window>

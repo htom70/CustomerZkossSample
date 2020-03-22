@@ -5,9 +5,6 @@
 	</columns>
 	<rows>
 		<row>
-			<a href="http://www.userrendszerhaz.hu">USER Rendszerház</a>
-		</row>
-		<row>
 			<image src="/imgs/site.png"/><a href="http://www.zkoss.org/">ZK</a>
 		</row>
 		<row>
