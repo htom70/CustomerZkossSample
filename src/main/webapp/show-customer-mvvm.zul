@@ -10,6 +10,7 @@
             <listhead>
                 <!--			<listheader label="Id" />-->
                 <listheader align="center" width="16%" label="Name"/>
+                <listheader align="center" width="16%" label="Gender"/>
                 <listheader align="center" width="16%" label="Address"/>
                 <listheader align="center" width="16%" label="Phone Number"/>
                 <listheader align="center" width="16%" label="E-mail Address"/>
@@ -23,6 +24,7 @@
                 <listitem>
                     <!--				<listcell>$<label value="@init(each.Id)" />l</listcell>-->
                     <listcell label="@init(each.name)"></listcell>
+                    <listcell label="@init(each.gender.label)"></listcell>
                     <listcell label="@init(each.address)"></listcell>
                     <listcell label="@init(each.phoneNumber)"></listcell>
                     <listcell label="@init(each.email)"></listcell>

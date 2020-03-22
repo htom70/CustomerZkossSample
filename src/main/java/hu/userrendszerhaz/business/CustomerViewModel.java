@@ -1,6 +1,7 @@
 package hu.userrendszerhaz.business;
 
 import hu.userrendszerhaz.domain.Customer;
+import hu.userrendszerhaz.domain.Gender;
 import hu.userrendszerhaz.service.CountryInfoService;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -8,12 +9,14 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class CustomerViewModel {
 
     private String customerName;
+    private Gender customerGender;
     private String customerAddress;
     private String customerPhoneNumber;
     private String customerEmail;
@@ -21,11 +24,11 @@ public class CustomerViewModel {
     private String customerCountry;
     private Customer customer;
     private String dialogPage;
-    private List<Customer> customerList = new ListModelList<>();
+    private List<Customer> customerList;
     private Customer selectedCustomer;
 
     public CustomerViewModel() {
-        loadCustomers();
+        customerList = new ListModelList<>(loadCustomers());
 //        dialogPage="/pages/empty.zul";
     }
 
@@ -35,6 +38,14 @@ public class CustomerViewModel {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public Gender getCustomerGender() {
+        return customerGender;
+    }
+
+    public void setCustomerGender(Gender customerGender) {
+        this.customerGender = customerGender;
     }
 
     public String getCustomerAddress() {
@@ -111,10 +122,14 @@ public class CustomerViewModel {
 
     private Listbox customerListbox;
 
-    //    private List<Customer> customerList = new LinkedList<>();
     private CustomerService customerService = new CustomerServiceImpl();
 
-    public List<String> getCountryList(){
+    public List<Gender> getGenderList(){
+        return Arrays.asList(Gender.values());
+    }
+
+
+    public List<String> getCountryList() {
         return CountryInfoService.getCountryList();
     }
 
@@ -122,27 +137,20 @@ public class CustomerViewModel {
     }
 
     @Command
-    @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber","customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
+    @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
     public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerAddress, customerPhoneNumber, customerEmail, customerBirthday,customerCountry);
+        customer = new Customer(customerName, customerGender,customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry);
         customerService.create(customer);
         this.dialogPage = page;
-        loadCustomers();
-//        customerName = null;
-//        customerAddress = null;
-//        customerPhoneNumber = null;
-//        customerEmail = null;
-//        customerBirthday = null;
-//        customerCountry=null;
-
+        customerList = loadCustomers();
     }
 
     @Command
-    @NotifyChange({"customerList", "selectedCustomer","dialogPage"})
+    @NotifyChange({"customerList", "selectedCustomer", "dialogPage"})
     public void update(@BindingParam("page") String page) {
         customerService.update(selectedCustomer);
         this.dialogPage = page;
-//        loadCustomers();
+        customerList = loadCustomers();
     }
 
 
@@ -157,25 +165,24 @@ public class CustomerViewModel {
     public void delete() {
         customerService.delete(selectedCustomer);
         selectedCustomer = null;
-        loadCustomers();
+        customerList = loadCustomers();
     }
 
     @Command
     @NotifyChange({"customerList"})
     public void deleteAll() {
         customerService.deleteAll();
-        loadCustomers();
+        customerList = loadCustomers();
     }
 
     @Command
-    @NotifyChange({"dialogPage","selectedCustomer"})
-    public void showDialog(@BindingParam("page") String page){
-
+    @NotifyChange({"dialogPage", "selectedCustomer"})
+    public void showDialog(@BindingParam("page") String page) {
         this.dialogPage = page;
     }
 
 
-    private void loadCustomers() {
-        customerList = customerService.findAllCustomers();
+    private List<Customer> loadCustomers() {
+        return customerService.findAllCustomers();
     }
 }

@@ -2,7 +2,8 @@
 <window
         contentStyle="overflow:auto"
         id="custome_new" title="Új ügyfél rögzítése" mode="modal" visible="true"
-        minimizable="false" border="normal" position="center,center" closable="true" action="show: slideDown;hide: slideUp"
+        minimizable="false" border="normal" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp"
         onClose="@command('showDialog', page='/pages/empty.zul')">
     <caption src="/imgs/profile.png" sclass="fn-caption" label="NEW CUSTOMER"/>
     <vlayout>
@@ -17,6 +18,17 @@
                     <cell>
                         <textbox value="@save(vm.customerName)" width="200px"
                                  constraint="no empty: Plean enter your full name"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">Gender :</cell>
+                    <cell>
+                        <radiogroup model="@load(vm.genderList)"
+                                    selectedItem="@save(vm.customerGender)">
+                            <template name="model">
+                                <radio label="@load(each.label)"/>
+                            </template>
+                        </radiogroup>
                     </cell>
                 </row>
                 <row>
@@ -66,8 +78,8 @@
             </rows>
         </grid>
         <hlayout>
-            <button label="Save" onClick="@command('save', page='/pages/empty.zul')" />
-            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')" />
+            <button label="Save" onClick="@command('save', page='/pages/empty.zul')"/>
+            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')"/>
         </hlayout>
     </vlayout>
 </window>

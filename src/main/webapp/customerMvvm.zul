@@ -1,5 +1,4 @@
 <window title="Customer Administration" border="normal"  hflex="1" vflex="1" contentStyle="overflow:auto"
-
         viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')">
     <hbox align="center">
         Name:

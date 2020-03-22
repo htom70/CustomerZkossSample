@@ -18,6 +18,17 @@
                     </cell>
                 </row>
                 <row>
+                    <cell sclass="row-title">Gender :</cell>
+                    <cell>
+                        <radiogroup model="@load(vm.genderList)"
+                                    selectedItem="@bind(vm.selectedCustomer.gender)">
+                            <template name="model">
+                                <radio label="@bind(each.label)"/>
+                            </template>
+                        </radiogroup>
+                    </cell>
+                </row>
+                <row>
                     <cell sclass="row-title">Address :</cell>
                     <cell>
                         <textbox value="@bind(vm.selectedCustomer.address)" width="200px"

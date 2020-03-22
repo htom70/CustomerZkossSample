@@ -13,6 +13,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String name;
+    private Gender gender;
     private String address;
     private String phoneNumber;
     private String email;
@@ -22,13 +23,14 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String name, String address, String phoneNumber, String email, Date birthday,String country) {
+    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.birthday = birthday;
         this.country = country;
+        this.gender = gender;
     }
 
     public Long getId() {
@@ -45,6 +47,14 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getAddress() {
