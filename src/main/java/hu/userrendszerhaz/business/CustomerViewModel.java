@@ -3,8 +3,10 @@ package hu.userrendszerhaz.business;
 import hu.userrendszerhaz.domain.Customer;
 import hu.userrendszerhaz.domain.Gender;
 import hu.userrendszerhaz.service.CountryInfoService;
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -24,12 +26,12 @@ public class CustomerViewModel {
     private String customerCountry;
     private Customer customer;
     private String dialogPage;
-    private List<Customer> customerList;
+    private ListModelList<Customer> customerList;
     private Customer selectedCustomer;
 
-    public CustomerViewModel() {
-        customerList = new ListModelList<>(loadCustomers());
-//        dialogPage="/pages/empty.zul";
+    @Init
+    public void init() {
+        loadCustomers();
     }
 
     public String getCustomerName() {
@@ -64,11 +66,11 @@ public class CustomerViewModel {
         this.customerPhoneNumber = customerPhoneNumber;
     }
 
-    public List<Customer> getCustomerList() {
+    public ListModelList<Customer> getCustomerList() {
         return customerList;
     }
 
-    public void setCustomerList(List<Customer> customerList) {
+    public void setCustomerList(ListModelList<Customer> customerList) {
         this.customerList = customerList;
     }
 
@@ -124,7 +126,7 @@ public class CustomerViewModel {
 
     private CustomerService customerService = new CustomerServiceImpl();
 
-    public List<Gender> getGenderList(){
+    public List<Gender> getGenderList() {
         return Arrays.asList(Gender.values());
     }
 
@@ -139,18 +141,19 @@ public class CustomerViewModel {
     @Command
     @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
     public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerGender,customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry);
+        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry);
         customerService.create(customer);
         this.dialogPage = page;
-        customerList = loadCustomers();
+        loadCustomers();
     }
 
     @Command
-    @NotifyChange({"customerList", "selectedCustomer", "dialogPage"})
+    @NotifyChange({"customerList"})
     public void update(@BindingParam("page") String page) {
-        customerService.update(selectedCustomer);
+        selectedCustomer = customerService.update(selectedCustomer);
+        loadCustomers();
+        BindUtils.postNotifyChange(null, null, this, "dialogPage");
         this.dialogPage = page;
-        customerList = loadCustomers();
     }
 
 
@@ -165,14 +168,14 @@ public class CustomerViewModel {
     public void delete() {
         customerService.delete(selectedCustomer);
         selectedCustomer = null;
-        customerList = loadCustomers();
+        loadCustomers();
     }
 
     @Command
     @NotifyChange({"customerList"})
     public void deleteAll() {
         customerService.deleteAll();
-        customerList = loadCustomers();
+        loadCustomers();
     }
 
     @Command
@@ -182,7 +185,8 @@ public class CustomerViewModel {
     }
 
 
-    private List<Customer> loadCustomers() {
-        return customerService.findAllCustomers();
+    private void loadCustomers() {
+        List<Customer> customers = customerService.findAllCustomers();
+        customerList = new ListModelList<>(customers);
     }
 }

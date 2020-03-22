@@ -37,10 +37,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void update(Customer customer) {
+    public Customer update(Customer customer) {
         customerDao.openCurrentSessionwithTransaction();
-        customerDao.modifyCustomer(customer);
+        Customer result = customerDao.modifyCustomer(customer);
         customerDao.closeCurrentSessionwithTransaction();
+        return result;
     }
 
     @Override
