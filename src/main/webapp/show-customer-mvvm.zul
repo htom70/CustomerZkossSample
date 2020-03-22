@@ -35,9 +35,10 @@
         </listbox>
     </vlayout>
     <hbox style="margin-top:20px">
-        <vbox>
+        <hbox>
             <button label="Add Customer" onClick="@command('showDialog', page='/pages/new.zul')"/>
-        </vbox>
+            <button label="Delete all Customers" onClick="@command('deleteAll')"/>
+        </hbox>
     </hbox>
     <include id="dialoginclude" src="@load(vm.dialogPage)"/>
 </window>

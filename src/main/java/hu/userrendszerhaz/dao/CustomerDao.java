@@ -52,14 +52,6 @@ public class CustomerDao {
         currentSession.close();
     }
 
-//    private static SessionFactory getSessionFactory() {
-//        Configuration configuration = new Configuration().configure();
-//        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-//                .applySettings(configuration.getProperties());
-//        SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
-//        return sessionFactory;
-//    }
-
     protected void setUp() throws Exception {
         // A SessionFactory is set up once for an application!
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -101,6 +93,13 @@ public class CustomerDao {
 
     public void deleteCustomer(Customer customer) {
         getCurrentSession().delete(customer);
+    }
+
+    public void deleteAllCustomers() {
+        String stringQuery = "DELETE FROM Customer";
+        Query query = getCurrentSession().createQuery(stringQuery);
+        query.executeUpdate();
+        getCurrentSession();
     }
 
     public Customer findCustomerById(Long Id) {

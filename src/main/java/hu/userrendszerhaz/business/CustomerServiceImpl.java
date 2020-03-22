@@ -49,4 +49,11 @@ public class CustomerServiceImpl implements CustomerService {
         customerDao.deleteCustomer(customer);
         customerDao.closeCurrentSessionwithTransaction();
     }
+
+    @Override
+    public void deleteAll() {
+        customerDao.openCurrentSessionwithTransaction();
+        customerDao.deleteAllCustomers();
+        customerDao.closeCurrentSessionwithTransaction();
+    }
 }

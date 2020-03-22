@@ -161,6 +161,13 @@ public class CustomerViewModel {
     }
 
     @Command
+    @NotifyChange({"customerList"})
+    public void deleteAll() {
+        customerService.deleteAll();
+        loadCustomers();
+    }
+
+    @Command
     @NotifyChange({"dialogPage","selectedCustomer"})
     public void showDialog(@BindingParam("page") String page){
 
