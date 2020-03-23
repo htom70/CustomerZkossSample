@@ -3,10 +3,16 @@
     <listener>
         <listener-class>hu.userrendszerhaz.listener.ZKContextListener</listener-class>
     </listener>
+<!--    <listener>-->
+<!--        <listener-class>org.zkoss.zkmax.au.websocket.WebSocketWebAppInit</listener-class>-->
+<!--    </listener>-->
+
 
     <library-property>
-        <name>org.zkoss.web.preferred.locale</name>
-        <value>hu</value>
+<!--        <name>org.zkoss.web.preferred.locale</name>-->
+<!--        <value>hu</value>-->
+        <name>org.zkoss.util.label.web.charset</name>
+        <value>UTF-8</value>
     </library-property>
 
 
@@ -22,6 +28,7 @@
     <system-config>
 <!--        <label-location>/resources/i3-label_hu.properties</label-location>-->
         <!-- kilobytes -->
+<!--        <label-location></label-location>-->
         <max-upload-size>20000</max-upload-size>
     </system-config>
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/i3-label.properties" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/i3-label_hu.properties" />
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/i3-label.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/i3-label_hu.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/i3-label_us.properties" />
+      <base-name>i3-label</base-name>
+    </custom-resource-bundle>
+  </component>
+</project>

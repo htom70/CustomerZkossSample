@@ -11,6 +11,8 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -141,7 +143,7 @@ public class CustomerViewModel {
     @Command
     @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
     public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry);
+        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, convertDateToLocalDate(customerBirthday), customerCountry);
         customerService.create(customer);
         this.dialogPage = page;
         loadCustomers();
@@ -182,6 +184,12 @@ public class CustomerViewModel {
     @NotifyChange({"dialogPage", "selectedCustomer"})
     public void showDialog(@BindingParam("page") String page) {
         this.dialogPage = page;
+    }
+
+    public LocalDate convertDateToLocalDate(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
 

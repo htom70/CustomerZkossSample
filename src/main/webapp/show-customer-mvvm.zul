@@ -1,23 +1,24 @@
-<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?link rel="stylesheet" type="text/css" href="/style.css"?
+        ?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')"
         border="normal" hflex="2" vflex="1" contentStyle="overflow:auto"
 >
-    <caption src="/imgs/profile.png" sclass="fn-caption" label="SHOW CUSTOMERS"/>
+    <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.showCustomers}"/>
     <vlayout>
 
         <listbox width="100%" rows="3" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
                  selectedItem="@bind(vm.selectedCustomer)">
             <listhead>
                 <!--			<listheader label="Id" />-->
-                <listheader align="center" width="16%" label="Name"/>
-                <listheader align="center" width="16%" label="Gender"/>
-                <listheader align="center" width="16%" label="Address"/>
-                <listheader align="center" width="16%" label="Phone Number"/>
-                <listheader align="center" width="16%" label="E-mail Address"/>
-                <listheader align="center" width="16%" label="Birthday"/>
-                <listheader align="center" width="16%" label="Country"/>
-                <listheader align="center" width="16%" label="Edit"/>
-                <listheader align="center" width="16%" label="Delete"/>
+                <listheader align="center" width="16%" label="${labels.name}"/>
+                <listheader align="center" width="16%" label="${labels.gender}"/>
+                <listheader align="center" width="16%" label="${labels.address}"/>
+                <listheader align="center" width="16%" label="${labels.phoneNumber}"/>
+                <listheader align="center" width="16%" label="${labels.emailAddress}"/>
+                <listheader align="center" width="16%" label="${labels.birthday}"/>
+                <listheader align="center" width="16%" label="${labels.country}"/>
+                <listheader align="center" width="16%" label="${labels.edit}"/>
+                <listheader align="center" width="16%" label="${labels.delete}"/>
 
             </listhead>
             <template name="model">
@@ -30,7 +31,8 @@
                     <listcell label="@init(each.email)"></listcell>
                     <listcell label="@init(each.birthday)"></listcell>
                     <listcell label="@init(each.country)"></listcell>
-                    <listcell iconSclass="z-icon-fw z-icon-edit" onClick="@command('showDialog', page='/pages/details.zul')"/>
+                    <listcell iconSclass="z-icon-fw z-icon-edit"
+                              onClick="@command('showDialog', page='/pages/details.zul')"/>
                     <listcell iconSclass="z-icon-fw z-icon-trash" onClick="@command('delete')"/>
                 </listitem>
             </template>
@@ -38,8 +40,8 @@
     </vlayout>
     <hbox style="margin-top:20px">
         <hbox>
-            <button label="Add Customer" onClick="@command('showDialog', page='/pages/new.zul')"/>
-            <button label="Delete all Customers" onClick="@command('deleteAll')"/>
+            <button label="${labels.addCustomer}" onClick="@command('showDialog', page='/pages/new.zul')"/>
+            <button label="${labels.deleteAllCustomers}" onClick="@command('deleteAll')"/>
         </hbox>
     </hbox>
     <include id="dialoginclude" src="@load(vm.dialogPage)"/>

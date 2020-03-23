@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
@@ -17,13 +19,14 @@ public class Customer {
     private String address;
     private String phoneNumber;
     private String email;
-    private Date birthday;
+//    @Temporal(TemporalType.DATE)
+    private LocalDate birthday;
     private String country;
 
     public Customer() {
     }
 
-    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country) {
+    public Customer(String name, Gender gender,String address, String phoneNumber, String email, LocalDate birthday,String country) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -82,11 +85,15 @@ public class Customer {
     }
 
     public Date getBirthday() {
-        return birthday;
+        return Date.from(birthday.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 
     public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+        this.birthday = birthday.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     public String getCountry() {
