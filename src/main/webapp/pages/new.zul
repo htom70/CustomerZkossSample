@@ -55,7 +55,7 @@
                 <row>
                     <cell sclass="row-title">Birthday :</cell>
                     <cell>
-                        <datebox value="@save(vm.customerBirthday)" width="200px"
+                        <datebox format="yyyy/MM/dd" value="@save(vm.customerBirthday)" width="200px"
                                  constraint="no future"/>
                     </cell>
                 </row>

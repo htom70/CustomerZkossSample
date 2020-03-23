@@ -1,0 +1,84 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')"
+        contentStyle="overflow:auto"
+        id="custome_new" title="Új ügyfél rögzítése" mode="modal" visible="true"
+        minimizable="false" border="normal" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp"
+        onClose="@command('showDialog', page='/pages/empty.zul')">
+    <caption src="/imgs/profile.png" sclass="fn-caption" label="NEW CUSTOMER"/>
+    <vlayout>
+        <grid width="500px">
+            <columns>
+                <column align="right" hflex="min"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell sclass="row-title">Type form Outer :</cell>
+                    <cell>
+                        <label value="@load(vm.typeFromOuter)" width="200px"/>
+                    </cell>
+                </row>
+<!--                <row>-->
+<!--                    <cell sclass="row-title">Gender :</cell>-->
+<!--                    <cell>-->
+<!--                        <radiogroup model="@load(vm.genderList)"-->
+<!--                                    selectedItem="@save(vm.customerGender)">-->
+<!--                            <template name="model">-->
+<!--                                <radio label="@load(each.label)"/>-->
+<!--                            </template>-->
+<!--                        </radiogroup>-->
+<!--                    </cell>-->
+<!--                </row>-->
+<!--                <row>-->
+<!--                    <cell sclass="row-title">Address :</cell>-->
+<!--                    <cell>-->
+<!--                        <textbox value="@save(vm.customerAddress)" width="200px"-->
+<!--                                 constraint="no empty: Please enter your Address"/>-->
+<!--                    </cell>-->
+<!--                </row>-->
+<!--                <row>-->
+<!--                    <cell sclass="row-title">Phone Number :</cell>-->
+<!--                    <cell>-->
+<!--                        <textbox value="@save(vm.customerPhoneNumber)" width="200px"-->
+<!--                                 constraint="no empty, /\+([0-9]){11}/ : Please enter an valid Phone Number (+36701234567)"/>-->
+<!--                    </cell>-->
+<!--                </row>-->
+<!--                <row>-->
+<!--                    <cell sclass="row-title">Email :</cell>-->
+<!--                    <cell>-->
+<!--                        <textbox value="@save(vm.customerEmail)" width="200px"-->
+<!--                                 constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address"/>-->
+<!--                    </cell>-->
+<!--                </row>-->
+<!--                <row>-->
+<!--                    <cell sclass="row-title">Birthday :</cell>-->
+<!--                    <cell>-->
+<!--                        <datebox value="@save(vm.customerBirthday)" width="200px"-->
+<!--                                 constraint="no future"/>-->
+<!--                    </cell>-->
+<!--                </row>-->
+<!--                <row>-->
+<!--                    <cell sclass="row-title">Country :</cell>-->
+<!--                    <cell>-->
+<!--                        <listbox model="@load(vm.countryList)" mold="select" width="200px"-->
+<!--                                 selectedItem="@save(vm.customerCountry)">-->
+<!--                            <template name="model">-->
+<!--                                <listitem label="@load(each)"/>-->
+<!--                            </template>-->
+<!--                        </listbox>-->
+<!--                    </cell>-->
+<!--                </row>-->
+<!--                <row>-->
+<!--                    <cell>-->
+
+<!--                    </cell>-->
+<!--                </row>-->
+            </rows>
+        </grid>
+<!--        <hlayout>-->
+<!--            <button label="Save" onClick="@command('save', page='/pages/empty.zul')"/>-->
+<!--            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')"/>-->
+<!--        </hlayout>-->
+    </vlayout>
+</window>

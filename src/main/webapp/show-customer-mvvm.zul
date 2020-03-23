@@ -45,4 +45,5 @@
         </hbox>
     </hbox>
     <include id="dialoginclude" src="@load(vm.dialogPage)"/>
+    <include type="outerPageLiteralValue" src="/pages/inner.zul"/>
 </window>

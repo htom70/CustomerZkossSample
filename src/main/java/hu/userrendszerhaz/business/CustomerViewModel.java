@@ -4,10 +4,7 @@ import hu.userrendszerhaz.domain.Customer;
 import hu.userrendszerhaz.domain.Gender;
 import hu.userrendszerhaz.service.CountryInfoService;
 import org.zkoss.bind.BindUtils;
-import org.zkoss.bind.annotation.BindingParam;
-import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.Init;
-import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.bind.annotation.*;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 
@@ -31,8 +28,19 @@ public class CustomerViewModel {
     private ListModelList<Customer> customerList;
     private Customer selectedCustomer;
 
+    private String typeFromOuter;
+
+    public String getTypeFromOuter() {
+        return typeFromOuter;
+    }
+
+    public void setTypeFromOuter(String typeFromOuter) {
+        this.typeFromOuter = typeFromOuter;
+    }
+
     @Init
-    public void init() {
+    public void init(@ExecutionArgParam("type") String type) {
+        typeFromOuter = type;
         loadCustomers();
     }
 
