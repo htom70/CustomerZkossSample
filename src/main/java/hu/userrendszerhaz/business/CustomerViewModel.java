@@ -151,10 +151,10 @@ public class CustomerViewModel {
     @Command
     @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
     public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, convertDateToLocalDate(customerBirthday), customerCountry);
+        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry);
         customerService.create(customer);
-        this.dialogPage = page;
         loadCustomers();
+        this.dialogPage = page;
     }
 
     @Command

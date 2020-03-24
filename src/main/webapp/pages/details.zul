@@ -69,7 +69,7 @@
                 </row>
             </rows>
         </grid>
-        <div>You are editing<label value="@load(vm.selectedCustomer.name)"/>'s profile.
+        <div>You are editing <label value="@load(vm.selectedCustomer.name)"/>'s profile.
         </div>
         <hlayout>
             <button label="Save" onClick="@command('update', page='/pages/empty.zul')" />

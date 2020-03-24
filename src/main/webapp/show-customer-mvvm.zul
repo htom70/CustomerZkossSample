@@ -29,7 +29,7 @@
                     <listcell label="@init(each.address)"></listcell>
                     <listcell label="@init(each.phoneNumber)"></listcell>
                     <listcell label="@init(each.email)"></listcell>
-                    <listcell label="@init(each.birthday)"></listcell>
+                    <listcell label="@init(each.birthdayString)"></listcell>
                     <listcell label="@init(each.country)"></listcell>
                     <listcell iconSclass="z-icon-fw z-icon-edit"
                               onClick="@command('showDialog', page='/pages/details.zul')"/>

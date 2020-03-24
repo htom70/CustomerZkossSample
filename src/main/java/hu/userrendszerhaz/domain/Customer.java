@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -20,13 +24,13 @@ public class Customer {
     private String phoneNumber;
     private String email;
 //    @Temporal(TemporalType.DATE)
-    private LocalDate birthday;
+    private Date birthday;
     private String country;
 
     public Customer() {
     }
 
-    public Customer(String name, Gender gender,String address, String phoneNumber, String email, LocalDate birthday,String country) {
+    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -85,16 +89,19 @@ public class Customer {
     }
 
     public Date getBirthday() {
-        return Date.from(birthday.atStartOfDay()
-                .atZone(ZoneId.systemDefault())
-                .toInstant());
+        return birthday;
     }
 
     public void setBirthday(Date birthday) {
-        this.birthday = birthday.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
+        this.birthday = birthday;
     }
+
+    public String getBirthdayString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        return simpleDateFormat.format(birthday);
+    }
+
+
 
     public String getCountry() {
         return country;
