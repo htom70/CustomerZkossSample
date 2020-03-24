@@ -11,53 +11,53 @@
             </columns>
             <rows>
                 <row>
-                    <cell sclass="row-title">Full Name :</cell>
+                    <cell sclass="row-title">${labels.formLabelName}</cell>
                     <cell>
                         <textbox value="@bind(vm.selectedCustomer.name)" width="200px"
                                  constraint="no empty: Plean enter your full name"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Gender :</cell>
+                    <cell sclass="row-title">${labels.formLabelGender}</cell>
                     <cell>
                         <radiogroup model="@load(vm.genderList)"
                                     selectedItem="@bind(vm.selectedCustomer.gender)">
                             <template name="model">
-                                <radio label="@bind(each.label)"/>
+                                <radio label="@bind(each.labelString)"/>
                             </template>
                         </radiogroup>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Address :</cell>
+                    <cell sclass="row-title">${labels.formLabelAddress}</cell>
                     <cell>
                         <textbox value="@bind(vm.selectedCustomer.address)" width="200px"
                                  constraint="no empty: Please enter your Address"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Phone Number :</cell>
+                    <cell sclass="row-title">${labels.formLabelNamePhoneNumber}</cell>
                     <cell>
                         <textbox value="@bind(vm.selectedCustomer.phoneNumber)" width="200px"
                                  constraint="no empty, /\+([0-9]){11}/ : Please enter an valid Phone Number (+36701234567)"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Email :</cell>
+                    <cell sclass="row-title">${labels.formLabelEmail}</cell>
                     <cell>
                         <textbox value="@bind(vm.selectedCustomer.email)" width="200px"
                                  constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Birthday :</cell>
+                    <cell sclass="row-title">${labels.formLabelBirthday}</cell>
                     <cell>
                         <datebox format="yyyy/MM/dd" value="@bind(vm.selectedCustomer.birthday)" width="200px"
                                  constraint="no future"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Country :</cell>
+                    <cell sclass="row-title">${labels.formLabelCountry}</cell>
                     <cell>
                         <listbox model="@load(vm.countryList)" mold="select" width="200px"
                                  selectedItem="@bind(vm.selectedCustomer.country)">

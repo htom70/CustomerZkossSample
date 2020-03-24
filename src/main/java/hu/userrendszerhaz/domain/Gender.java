@@ -1,19 +1,23 @@
 package hu.userrendszerhaz.domain;
 
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zul.Label;
+
 public enum Gender {
-    MALE ("Male"), FEMALE("Female");
+    MALE("male"), FEMALE("female");
 
-    private String label;
+    private String genderType;
 
-    Gender(String label) {
-        this.label = label;
+    Gender(String genderType) {
+        this.genderType = genderType;
     }
 
-    public String getLabel() {
-        return label;
+    public String getLabelString() {
+        String string= Labels.getLabel(this.genderType) ;
+        return string;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+//    public void setLabelString(String labelString) {
+//        this.labelString = Labels.getLabel(labelString);
+//    }
 }
