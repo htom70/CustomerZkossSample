@@ -6,7 +6,7 @@
     <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.showCustomers}"/>
     <vlayout>
 
-        <listbox width="100%" rows="3" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
+        <listbox width="100%" rows="@load(vm.pageSize)" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
                  selectedItem="@bind(vm.selectedCustomer)">
             <listhead>
                 <!--			<listheader label="Id" />-->
@@ -42,6 +42,7 @@
         <hbox>
             <button label="${labels.addCustomer}" onClick="@command('showDialog', page='/pages/new.zul')"/>
             <button label="${labels.deleteAllCustomers}" onClick="@command('deleteAll')"/>
+            <button label="${labels.testParameter}" onClick="@command('showDialog', page='/pages/input-test-parameter-for-list-pagination.zul')"/>
         </hbox>
     </hbox>
     <include id="dialoginclude" src="@load(vm.dialogPage)"/>

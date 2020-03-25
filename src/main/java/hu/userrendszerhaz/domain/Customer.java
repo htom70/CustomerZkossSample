@@ -1,9 +1,8 @@
 package hu.userrendszerhaz.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
@@ -13,6 +12,8 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Customer {
 
     @Id

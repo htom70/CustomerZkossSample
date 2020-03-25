@@ -17,10 +17,11 @@
         <property name="c3p0.timeout">1800</property>
 
         <!-- Disable second-level cache. -->
-<!--        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>-->
-        <property name="cache.use_query_cache">false</property>
+        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        <property name="cache.use_query_cache">true</property>
         <property name="cache.use_minimal_puts">false</property>
         <property name="max_fetch_depth">3</property>
+        <property name="hibernate.default_batch_fetch_size">1000</property>
 
         <!-- Print SQL to stdout. -->
         <property name="show_sql">true</property>

@@ -12,9 +12,13 @@ public interface CustomerService {
 
     public List<Customer> findAllCustomers();
 
+    public List<Customer> findCustomersFromIndexAndPageSize(int index, int pageSize);
+
     public Customer update(Customer customer);
 
     public void delete(Customer customer);
 
     public void deleteAll();
+
+    public int getSize();
 }

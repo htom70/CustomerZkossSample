@@ -78,8 +78,8 @@
             </rows>
         </grid>
         <hlayout>
-            <button label="Save" onClick="@command('save', page='/pages/empty.zul')"/>
-            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')"/>
+            <button label="${labels.save}" onClick="@command('save', page='/pages/empty.zul')"/>
+            <button label="${labels.cancel}" onClick="@command('showDialog', page='/pages/empty.zul')"/>
         </hlayout>
     </vlayout>
 </window>

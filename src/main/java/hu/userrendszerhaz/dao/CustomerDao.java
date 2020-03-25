@@ -1,18 +1,14 @@
 package hu.userrendszerhaz.dao;
 
-import com.fasterxml.classmate.AnnotationConfiguration;
 import hu.userrendszerhaz.domain.Customer;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projections;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class CustomerDao {
@@ -24,7 +20,7 @@ public class CustomerDao {
     private Session currentSession;
     private Transaction currentTransaction;
 
-    public CustomerDao()  {
+    public CustomerDao() {
         try {
             setUp();
         } catch (Exception e) {
@@ -32,15 +28,17 @@ public class CustomerDao {
         }
     }
 
-    public Session openCurrentSession() {
-        currentSession = sessionFactory.openSession();
-        return currentSession;
+    public static void closeSessionFactory() {
+
     }
 
-    public Session openCurrentSessionwithTransaction() {
+    public void openCurrentSession() {
+        currentSession = sessionFactory.openSession();
+    }
+
+    public void openCurrentSessionwithTransaction() {
         currentSession = sessionFactory.openSession();
         currentTransaction = currentSession.beginTransaction();
-        return currentSession;
     }
 
     public void closeCurrentSession() {
@@ -58,12 +56,11 @@ public class CustomerDao {
                 .configure() // configures settings from hibernate.cfg.xml
                 .build();
         try {
-            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-        }
-        catch (Exception e) {
+            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        } catch (Exception e) {
             // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
             // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy( registry );
+            StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 
@@ -84,30 +81,63 @@ public class CustomerDao {
     }
 
     public void saveCustomer(Customer customer) {
-        getCurrentSession().save(customer);
+        openCurrentSessionwithTransaction();
+        currentSession.save(customer);
+        closeCurrentSessionwithTransaction();
     }
 
     public Customer modifyCustomer(Customer customer) {
-        return (Customer)getCurrentSession().merge(customer);
+        openCurrentSessionwithTransaction();
+        Customer resultCustomer = (Customer) currentSession.merge(customer);
+        closeCurrentSessionwithTransaction();
+        return resultCustomer;
     }
 
     public void deleteCustomer(Customer customer) {
-        getCurrentSession().delete(customer);
+        openCurrentSessionwithTransaction();
+        currentSession.delete(customer);
+        closeCurrentSessionwithTransaction();
     }
 
     public void deleteAllCustomers() {
+        openCurrentSessionwithTransaction();
         String stringQuery = "DELETE FROM Customer";
-        Query query = getCurrentSession().createQuery(stringQuery);
+        Query query = currentSession.createQuery(stringQuery);
         query.executeUpdate();
-        getCurrentSession();
+        closeCurrentSessionwithTransaction();
     }
 
     public Customer findCustomerById(Long Id) {
-        return (Customer)getCurrentSession().get(Customer.class, Id);
+        openCurrentSession();
+        Customer resultCustomer = currentSession.get(Customer.class, Id);
+        closeCurrentSession();
+        return resultCustomer;
     }
 
     public List<Customer> getAllCustomers() {
-        Query query = getCurrentSession().createQuery("select c from Customer c");
-        return query.list();
+        openCurrentSession();
+        Query query = currentSession.createQuery("select c from Customer c");
+        List<Customer> customers = query.list();
+        closeCurrentSession();
+        return customers;
+    }
+
+    public List<Customer> findCustomersFromIndexAndPageSize(int firstIndex, int lastIndex) {
+        openCurrentSession();
+        Criteria criteria = currentSession.createCriteria(Customer.class);
+        criteria.setFirstResult(firstIndex);
+        criteria.setMaxResults(lastIndex);
+        List<Customer> customers = criteria.list();
+        closeCurrentSession();
+        return customers;
+    }
+
+    public Long getSize() {
+        openCurrentSession();
+        Criteria criteriaCount = currentSession.createCriteria(Customer.class);
+        criteriaCount.setProjection(Projections.rowCount());
+        Long result = (Long) criteriaCount.uniqueResult();
+        closeCurrentSession();
+        return result;
     }
 }

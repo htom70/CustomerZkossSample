@@ -5,6 +5,8 @@ import hu.userrendszerhaz.domain.Gender;
 import hu.userrendszerhaz.service.CountryInfoService;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.*;
+import org.zkoss.zul.AbstractListModel;
+import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 
@@ -25,8 +27,13 @@ public class CustomerViewModel {
     private String customerCountry;
     private Customer customer;
     private String dialogPage;
-    private ListModelList<Customer> customerList;
+    private int pageSize;
+    private int listIndex;
+    private int entityNumberForTest;
+    private ListModel<Customer> customerList;
+    private int cacheSize;
     private Customer selectedCustomer;
+    private CustomerService customerService;
 
     private String typeFromOuter;
 
@@ -40,6 +47,8 @@ public class CustomerViewModel {
 
     @Init
     public void init(@ExecutionArgParam("type") String type) {
+        pageSize = 5;
+        customerService = new CustomerServiceImpl();
         typeFromOuter = type;
         loadCustomers();
     }
@@ -76,7 +85,7 @@ public class CustomerViewModel {
         this.customerPhoneNumber = customerPhoneNumber;
     }
 
-    public ListModelList<Customer> getCustomerList() {
+    public ListModel<Customer> getCustomerList() {
         return customerList;
     }
 
@@ -134,8 +143,6 @@ public class CustomerViewModel {
 
     private Listbox customerListbox;
 
-    private CustomerService customerService = new CustomerServiceImpl();
-
     public List<Gender> getGenderList() {
         return Arrays.asList(Gender.values());
     }
@@ -143,6 +150,38 @@ public class CustomerViewModel {
 
     public List<String> getCountryList() {
         return CountryInfoService.getCountryList();
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getListIndex() {
+        return listIndex;
+    }
+
+    public void setListIndex(int listIndex) {
+        this.listIndex = listIndex;
+    }
+
+    public int getEntityNumberForTest() {
+        return entityNumberForTest;
+    }
+
+    public void setEntityNumberForTest(int entityNumberForTest) {
+        this.entityNumberForTest = entityNumberForTest;
+    }
+
+    public int getCacheSize() {
+        return cacheSize;
+    }
+
+    public void setCacheSize(int cacheSize) {
+        this.cacheSize = cacheSize;
     }
 
     private static void initFrontend() {
@@ -194,6 +233,21 @@ public class CustomerViewModel {
         this.dialogPage = page;
     }
 
+    @Command
+    @NotifyChange({"dialogPage", "customerList"})
+    public void saveTestParameters(@BindingParam("page") String page) {
+        fillListboxWithTestParameters();
+        this.dialogPage = page;
+    }
+
+    private void fillListboxWithTestParameters() {
+        for (int i = 0; i < entityNumberForTest; i++) {
+            customer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country");
+            customerService.create(customer);
+        }
+        loadCustomers();
+    }
+
     public LocalDate convertDateToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -203,6 +257,6 @@ public class CustomerViewModel {
 
     private void loadCustomers() {
         List<Customer> customers = customerService.findAllCustomers();
-        customerList = new ListModelList<>(customers);
+        customerList = new CustomerListModel(customers,customerService,cacheSize);
     }
 }

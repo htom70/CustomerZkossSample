@@ -15,46 +15,41 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void create(Customer customer) {
-        customerDao.openCurrentSessionwithTransaction();
         customerDao.saveCustomer(customer);
-        customerDao.closeCurrentSessionwithTransaction();
     }
 
     @Override
     public Customer findById(Long Id) {
-        customerDao.openCurrentSession();
-        Customer customer = customerDao.findCustomerById(Id);
-        customerDao.closeCurrentSession();
-        return customer;
+        return customerDao.findCustomerById(Id);
     }
 
     @Override
     public List<Customer> findAllCustomers() {
-        customerDao.openCurrentSession();
-        List<Customer> customers = customerDao.getAllCustomers();
-        customerDao.closeCurrentSession();
-        return customers;
+        return customerDao.getAllCustomers();
+    }
+
+    @Override
+    public List<Customer> findCustomersFromIndexAndPageSize(int index, int pageSize) {
+        return customerDao.findCustomersFromIndexAndPageSize(index, pageSize);
     }
 
     @Override
     public Customer update(Customer customer) {
-        customerDao.openCurrentSessionwithTransaction();
-        Customer result = customerDao.modifyCustomer(customer);
-        customerDao.closeCurrentSessionwithTransaction();
-        return result;
+        return customerDao.modifyCustomer(customer);
     }
 
     @Override
     public void delete(Customer customer) {
-        customerDao.openCurrentSessionwithTransaction();
         customerDao.deleteCustomer(customer);
-        customerDao.closeCurrentSessionwithTransaction();
     }
 
     @Override
     public void deleteAll() {
-        customerDao.openCurrentSessionwithTransaction();
         customerDao.deleteAllCustomers();
-        customerDao.closeCurrentSessionwithTransaction();
+    }
+
+    @Override
+    public int getSize() {
+     return Math.toIntExact(customerDao.getSize());
     }
 }

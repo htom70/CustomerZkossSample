@@ -1,0 +1,44 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window
+        contentStyle="overflow:auto"
+        id="custome_new" mode="modal" visible="true"
+        minimizable="false" border="normal" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp"
+        onClose="@command('showDialog', page='/pages/empty.zul')">
+    <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.testParameter}"/>
+    <vlayout>
+        <grid width="500px">
+            <columns>
+                <column align="right" hflex="min"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell sclass="row-title">${labels.testFormLabelRowCount}</cell>
+                    <cell>
+                        <textbox value="@save(vm.entityNumberForTest)" width="200px"
+                                 constraint="no empty: Please enter entity number"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">${labels.testFormLabelPageSize}</cell>
+                    <cell>
+                        <textbox value="@save(vm.pageSize)" width="200px"
+                                 constraint="no empty: Please enter page size"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">${labels.testFormLabelCacheSize}</cell>
+                    <cell>
+                        <textbox value="@save(vm.cacheSize)" width="200px"
+                                 constraint="no empty: Please enter page size"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <hlayout>
+            <button label="${labels.save}" onClick="@command('saveTestParameters', page='/pages/empty.zul')"/>
+            <button label="${labels.cancel}" onClick="@command('showDialog', page='/pages/empty.zul')"/>
+        </hlayout>
+    </vlayout>
+</window>
