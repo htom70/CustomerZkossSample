@@ -12,10 +12,18 @@ public enum Gender {
         this.genderType = genderType;
     }
 
-    public String getLabelString() {
-        String string= Labels.getLabel(this.genderType) ;
-        return string;
+    public String getGenderType() {
+        return genderType;
     }
+
+    public void setGenderType(String genderType) {
+        this.genderType = genderType;
+    }
+
+    //    public String getLabelString() {
+//        String string= Labels.getLabel(this.genderType) ;
+//        return string;
+//    }
 
 //    public void setLabelString(String labelString) {
 //        this.labelString = Labels.getLabel(labelString);

@@ -1,22 +1,24 @@
 package hu.userrendszerhaz.business;
 
+import hu.userrendszerhaz.converter.StringToLabelConverter;
+import hu.userrendszerhaz.domain.AgeCategory;
 import hu.userrendszerhaz.domain.Customer;
+import hu.userrendszerhaz.domain.Degree;
 import hu.userrendszerhaz.domain.Gender;
 import hu.userrendszerhaz.service.CountryInfoService;
 import org.zkoss.bind.BindUtils;
+import org.zkoss.bind.Converter;
 import org.zkoss.bind.annotation.*;
-import org.zkoss.zul.AbstractListModel;
-import org.zkoss.zul.ListModel;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listbox;
+import org.zkoss.zul.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CustomerViewModel {
+
+    private DegreeService degreeService= new DegreeServiceImpl();
+    private CustomerService customerService = new CustomerServiceImpl();
 
     private String customerName;
     private Gender customerGender;
@@ -25,6 +27,9 @@ public class CustomerViewModel {
     private String customerEmail;
     private Date customerBirthday;
     private String customerCountry;
+    private AgeCategory customerAgeCategory;
+    private String degreeItem;
+    private String ageCategoryString;
     private Customer customer;
     private String dialogPage;
     private int pageSize;
@@ -33,7 +38,16 @@ public class CustomerViewModel {
     private ListModel<Customer> customerList;
     private int cacheSize;
     private Customer selectedCustomer;
-    private CustomerService customerService;
+    private AgeCategory selectedAgeCategory;
+        private Map<Integer, Label> ageCategoryMap = new HashMap<>();
+    private List<AgeCategory> ageCategoryList = new ArrayList<>();
+    private Label ageCategoryLabel;
+    private String degreeName;
+    private List<Degree> degrees;
+    private ListModel<Degree> degreeList;
+    private Degree selectedDegree;
+    private Converter stringToLabelConverter = new StringToLabelConverter();
+
 
     private String typeFromOuter;
 
@@ -48,9 +62,22 @@ public class CustomerViewModel {
     @Init
     public void init(@ExecutionArgParam("type") String type) {
         pageSize = 5;
-        customerService = new CustomerServiceImpl();
         typeFromOuter = type;
+        fillAgeCategoryList();
+        fillAgeCategoryMap();
         loadCustomers();
+        loadDegrees();
+    }
+
+    private void fillAgeCategoryList() {
+        for (AgeCategory o : AgeCategory.values()) {
+            ageCategoryList.add(o);
+        }
+    }
+    private void fillAgeCategoryMap() {
+        ageCategoryMap.put(0, new Label("child"));
+        ageCategoryMap.put(1, new Label("adult"));
+        ageCategoryMap.put(2, new Label("retired"));
     }
 
     public String getCustomerName() {
@@ -133,6 +160,46 @@ public class CustomerViewModel {
         this.customerCountry = customerCountry;
     }
 
+    public AgeCategory getCustomerAgeCategory() {
+        return customerAgeCategory;
+    }
+
+    public void setCustomerAgeCategory(AgeCategory customerAgeCategory) {
+        this.customerAgeCategory = customerAgeCategory;
+    }
+
+    public Map<Integer, Label> getAgeCategoryMap() {
+        return ageCategoryMap;
+    }
+
+    public void setAgeCategoryMap(Map<Integer, Label> ageCategoryMap) {
+        this.ageCategoryMap = ageCategoryMap;
+    }
+
+    public List<AgeCategory> getAgeCategoryList() {
+        return ageCategoryList;
+    }
+
+    public void setAgeCategoryList(List<AgeCategory> ageCategoryList) {
+        this.ageCategoryList = ageCategoryList;
+    }
+
+    public Label getAgeCategoryString(int index) {
+        return ageCategoryMap.get(index);
+    }
+
+    public void setAgeCategoryString(String ageCategoryString) {
+        this.ageCategoryString = ageCategoryString;
+    }
+
+    public AgeCategory getSelectedAgeCategory() {
+        return selectedAgeCategory;
+    }
+
+    public void setSelectedAgeCategory(AgeCategory selectedAgeCategory) {
+        this.selectedAgeCategory = selectedAgeCategory;
+    }
+
     public String getDialogPage() {
         return dialogPage;
     }
@@ -152,12 +219,60 @@ public class CustomerViewModel {
         return CountryInfoService.getCountryList();
     }
 
+    public Label getAgeCategoryLabel(int index) {
+        return ageCategoryMap.get(index);
+    }
+
+    public void setAgeCategoryLabel(Label ageCategoryLabel) {
+        this.ageCategoryLabel = ageCategoryLabel;
+    }
+
+    public String getDegreeName() {
+        return degreeName;
+    }
+
+    public void setDegreeName(String degreeName) {
+        this.degreeName = degreeName;
+    }
+
+    public Degree getSelectedDegree() {
+        return selectedDegree;
+    }
+
+    public void setSelectedDegree(Degree selectedDegree) {
+        this.selectedDegree = selectedDegree;
+    }
+
+    public String getDegreeItem() {
+        return degreeItem;
+    }
+
+    public void setDegreeItem(String degreeItem) {
+        this.degreeItem = degreeItem;
+    }
+
+    public ListModel<Degree> getDegreeList() {
+        return degreeList;
+    }
+
+    public void setDegreeList(ListModel<Degree> degreeList) {
+        this.degreeList = degreeList;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Converter getStringToLabelConverter() {
+        return stringToLabelConverter;
+    }
+
+    public void setStringToLabelConverter(Converter stringToLabelConverter) {
+        this.stringToLabelConverter = stringToLabelConverter;
     }
 
     public int getListIndex() {
@@ -184,13 +299,17 @@ public class CustomerViewModel {
         this.cacheSize = cacheSize;
     }
 
+
+
     private static void initFrontend() {
     }
+
+
 
     @Command
     @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
     public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry);
+        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry,selectedAgeCategory,selectedDegree);
         customerService.create(customer);
         loadCustomers();
         this.dialogPage = page;
@@ -240,9 +359,18 @@ public class CustomerViewModel {
         this.dialogPage = page;
     }
 
-    private void fillListboxWithTestParameters() {
+    @Command
+    @NotifyChange({"dialogPage"})
+    public void saveDegree(@BindingParam("page") String page) {
+        Degree degree = new Degree(degreeName);
+        degreeService.createDegree(degree);
+        this.dialogPage = page;
+
+    }
+       private void fillListboxWithTestParameters() {
         for (int i = 0; i < entityNumberForTest; i++) {
-            customer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country");
+            customer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country",AgeCategory.CHILD,degrees.get(0))
+            ;
             customerService.create(customer);
         }
         loadCustomers();
@@ -258,5 +386,10 @@ public class CustomerViewModel {
     private void loadCustomers() {
         List<Customer> customers = customerService.findAllCustomers();
         customerList = new CustomerListModel(customers,customerService,cacheSize);
+    }
+
+    private void loadDegrees() {
+        degrees = degreeService.findAllDegrees();
+        degreeList = new ListModelList<>(degrees);
     }
 }

@@ -1,0 +1,30 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window
+        contentStyle="overflow:auto"
+        id="custome_new" mode="modal" visible="true"
+        minimizable="false" border="normal" position="center,center" closable="true"
+        action="show: slideDown;hide: slideUp"
+        onClose="@command('showDialog', page='/pages/empty.zul')">
+    <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.newDegree}"/>
+    <vlayout>
+        <grid width="500px">
+            <columns>
+                <column align="right" hflex="min"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
+                    <cell>
+                        <textbox value="@save(vm.degreeName)" width="200px"
+                                 constraint="no empty: Please enter your full degree name"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <hlayout>
+            <button label="${labels.save}" onClick="@command('saveDegree', page='/pages/empty.zul')"/>
+            <button label="${labels.cancel}" onClick="@command('showDialog', page='/pages/empty.zul')"/>
+        </hlayout>
+    </vlayout>
+</window>

@@ -17,7 +17,7 @@
                     <cell sclass="row-title">${labels.formLabelName}</cell>
                     <cell>
                         <textbox value="@save(vm.customerName)" width="200px"
-                                 constraint="no empty: Plean enter your full name"/>
+                                 constraint="no empty: Please enter your full name"/>
                     </cell>
                 </row>
                 <row>
@@ -26,9 +26,18 @@
                         <radiogroup model="@load(vm.genderList)"
                                     selectedItem="@save(vm.customerGender)">
                             <template name="model">
-                                <radio label="@load(each.labelString)"/>
+                                <radio label="@load(each.genderType) @converter(vm.stringToLabelConverter)"/>
                             </template>
                         </radiogroup>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">${labels.formLabelAgeCategory}</cell>
+                    <cell><combobox model="@load(vm.ageCategoryList)" selectedItem="@save(vm.selectedAgeCategory)">
+                        <template name="model">
+                            <comboitem label="@load(each) @converter(vm.stringToLabelConverter)"/>
+                        </template>
+                    </combobox>
                     </cell>
                 </row>
                 <row>
@@ -71,9 +80,13 @@
                     </cell>
                 </row>
                 <row>
-                    <cell>
-
-                    </cell>
+                            <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
+                            <cell><combobox model="@load(vm.degreeList)" selectedItem="@save(vm.selectedDegree)">
+                                <template name="model">
+                                    <comboitem  label="@load(each.degreeName)"/>
+                                </template>
+                            </combobox>
+                            </cell>
                 </row>
             </rows>
         </grid>

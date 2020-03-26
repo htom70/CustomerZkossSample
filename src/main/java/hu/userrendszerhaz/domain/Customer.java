@@ -1,6 +1,7 @@
 package hu.userrendszerhaz.domain;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -20,18 +21,27 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String name;
+
+//    @Enumerated(EnumType.STRING)
     private Gender gender;
+
     private String address;
     private String phoneNumber;
     private String email;
-//    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     private Date birthday;
     private String country;
+
+//    @Enumerated(EnumType.STRING)
+    private AgeCategory ageCategory;
+
+    @ManyToOne
+    private Degree degree;
 
     public Customer() {
     }
 
-    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country) {
+    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country, AgeCategory ageCategory,Degree degree) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -39,6 +49,8 @@ public class Customer {
         this.birthday = birthday;
         this.country = country;
         this.gender = gender;
+        this.ageCategory = ageCategory;
+        this.degree = degree;
     }
 
     public Long getId() {
@@ -102,13 +114,27 @@ public class Customer {
         return simpleDateFormat.format(birthday);
     }
 
-
-
     public String getCountry() {
         return country;
     }
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public AgeCategory getAgeCategory() {
+        return ageCategory;
+    }
+
+    public void setAgeCategory(AgeCategory ageCategory) {
+        this.ageCategory = ageCategory;
+    }
+
+    public Degree getDegree() {
+        return degree;
+    }
+
+    public void setDegree(Degree degree) {
+        this.degree = degree;
     }
 }

@@ -23,9 +23,18 @@
                         <radiogroup model="@load(vm.genderList)"
                                     selectedItem="@bind(vm.selectedCustomer.gender)">
                             <template name="model">
-                                <radio label="@bind(each.labelString)"/>
+                                <radio label="@bind(each.genderType) @converter(vm.stringToLabelConverter)"/>
                             </template>
                         </radiogroup>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">${labels.formLabelAgeCategory}</cell>
+                    <cell><combobox model="@load(vm.ageCategoryList)" selectedItem="@bind(vm.selectedCustomer.ageCategory)">
+                        <template name="model">
+                            <comboitem value="@load(each.category) @converter(vm.stringToLabelConverter)"/>
+                        </template>
+                    </combobox>
                     </cell>
                 </row>
                 <row>
@@ -65,6 +74,15 @@
                                 <listitem label="@load(each)"/>
                             </template>
                         </listbox>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
+                    <cell><combobox model="@load(vm.degreeList)" selectedItem="@bind(vm.selectedCustomer.degree)">
+                        <template name="model">
+                            <comboitem label="@load(each.degreeName)"/>
+                        </template>
+                    </combobox>
                     </cell>
                 </row>
             </rows>
