@@ -35,7 +35,7 @@
                     <cell sclass="row-title">${labels.formLabelAgeCategory}</cell>
                     <cell><combobox model="@load(vm.ageCategoryList)" selectedItem="@save(vm.selectedAgeCategory)">
                         <template name="model">
-                            <comboitem label="@load(each) @converter(vm.stringToLabelConverter)"/>
+                            <comboitem label="@load(each.category) @converter(vm.stringToLabelConverter)"/>
                         </template>
                     </combobox>
                     </cell>

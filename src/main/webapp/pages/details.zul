@@ -1,8 +1,9 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window
 
-        title="Customer modification"  visible="true" mode="modal" minimizable="false"
-        border="normal" position="center,center" closable="true" action="show: slideDown;hide: slideUp" onClose="@command('showDialog', page='/pages/empty.zul')">
+        title="Customer modification" visible="true" mode="modal" minimizable="false"
+        border="normal" position="center,center" closable="true" action="show: slideDown;hide: slideUp"
+        onClose="@command('showDialog', page='/pages/empty.zul')">
     <vlayout>
         <grid width="500px">
             <columns>
@@ -30,11 +31,13 @@
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelAgeCategory}</cell>
-                    <cell><combobox model="@load(vm.ageCategoryList)" selectedItem="@bind(vm.selectedCustomer.ageCategory)">
-                        <template name="model">
-                            <comboitem value="@load(each.category) @converter(vm.stringToLabelConverter)"/>
-                        </template>
-                    </combobox>
+                    <cell>
+                        <combobox model="@load(vm.ageCategoryList)"
+                                  selectedItem="@bind(vm.selectedCustomer.ageCategory)">
+                            <template name="model">
+                                <comboitem label="@bind(each.category) @converter(vm.stringToLabelConverter)"/>
+                            </template>
+                        </combobox>
                     </cell>
                 </row>
                 <row>
@@ -78,20 +81,21 @@
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
-                    <cell><combobox model="@load(vm.degreeList)" selectedItem="@bind(vm.selectedCustomer.degree)">
-                        <template name="model">
-                            <comboitem label="@load(each.degreeName)"/>
-                        </template>
-                    </combobox>
+                    <cell>
+                        <combobox model="@load(vm.degreeList)" selectedItem="@bind(vm.selectedCustomer.degree)">
+                            <template name="model">
+                                <comboitem label="@load(each.degreeName)"/>
+                            </template>
+                        </combobox>
                     </cell>
                 </row>
             </rows>
         </grid>
-        <div>You are editing <label value="@load(vm.selectedCustomer.name)"/>'s profile.
+        <div>You are editing<label value="@load(vm.selectedCustomer.name)"/>'s profile.
         </div>
         <hlayout>
-            <button label="Save" onClick="@command('update', page='/pages/empty.zul')" />
-            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')" />
+            <button label="Save" onClick="@command('update', page='/pages/empty.zul')"/>
+            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')"/>
         </hlayout>
     </vlayout>
 </window>
