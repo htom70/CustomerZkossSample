@@ -18,7 +18,7 @@ public class DegreeDao {
     private static Logger LOGGER = (Logger) LogManager.getLogger(CustomerDao.class.getName());
 
     public DegreeDao() {
-        currentSession = ZKContextListener.getHibernateUtil().getSession();
+        currentSession = HibernateUtil.getSessionFactory().openSession();
         LOGGER.debug("get Session");
     }
 

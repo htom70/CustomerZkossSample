@@ -27,7 +27,7 @@ public class CustomerDao {
     private Transaction currentTransaction;
 
     public CustomerDao() {
-        currentSession = ZKContextListener.getHibernateUtil().getSession();
+        currentSession = HibernateUtil.getSessionFactory().openSession();
     }
 
     private void openTransaction() {

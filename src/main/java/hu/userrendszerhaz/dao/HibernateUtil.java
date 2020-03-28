@@ -10,26 +10,26 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
   
     private static SessionFactory sessionFactory;
-    private static Session session;
 
-    public HibernateUtil() {
+    public static void init() {
         // A SessionFactory is set up once for an application!
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure() // configures settings from hibernate.cfg.xml
                 .build();
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            session = sessionFactory.openSession();
         } catch (Exception e) {
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 
-    public Session getSession() {
-        return session;
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public static void destroy() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 }  

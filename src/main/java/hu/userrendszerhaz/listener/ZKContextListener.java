@@ -8,21 +8,17 @@ import org.zkoss.zk.ui.util.WebAppInit;
 
 public class ZKContextListener implements WebAppInit,WebAppCleanup {
 
-    private static HibernateUtil hibernateUtil;
+
 
     @Override
     public void init(WebApp webApp) throws Exception {
-        hibernateUtil = new HibernateUtil();
+        HibernateUtil.init();
 
     }
 
     @Override
     public void cleanup(WebApp webApp) throws Exception {
-        hibernateUtil.getSessionFactory().close();
-    }
-
-    public static HibernateUtil getHibernateUtil() {
-        return hibernateUtil;
+    HibernateUtil.destroy();
     }
 }
 
