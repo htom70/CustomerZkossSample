@@ -37,11 +37,13 @@ public class Customer {
 
     @ManyToOne
     private Degree degree;
+    private int incomeBracketStart;
+    private int incomeBracketEnd;
 
     public Customer() {
     }
 
-    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country, AgeCategory ageCategory,Degree degree) {
+    public Customer(String name, Gender gender,String address, String phoneNumber, String email, Date birthday,String country, AgeCategory ageCategory,Degree degree,int incomeBracketStart, int incomeBracketEnd) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -51,6 +53,8 @@ public class Customer {
         this.gender = gender;
         this.ageCategory = ageCategory;
         this.degree = degree;
+        this.incomeBracketStart = incomeBracketStart;
+        this.incomeBracketEnd  = incomeBracketEnd;
     }
 
     public Long getId() {
@@ -136,5 +140,21 @@ public class Customer {
 
     public void setDegree(Degree degree) {
         this.degree = degree;
+    }
+
+    public int getIncomeBracketStart() {
+        return incomeBracketStart;
+    }
+
+    public void setIncomeBracketStart(int incomeBracketStart) {
+        this.incomeBracketStart = incomeBracketStart;
+    }
+
+    public int getIncomeBracketEnd() {
+        return incomeBracketEnd;
+    }
+
+    public void setIncomeBracketEnd(int incomeBracketEnd) {
+        this.incomeBracketEnd = incomeBracketEnd;
     }
 }

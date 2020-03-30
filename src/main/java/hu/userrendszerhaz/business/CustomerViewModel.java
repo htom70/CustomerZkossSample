@@ -17,8 +17,12 @@ import java.util.*;
 
 public class CustomerViewModel {
 
-    private DegreeService degreeService= new DegreeServiceImpl();
+    private DegreeService degreeService = new DegreeServiceImpl();
     private CustomerService customerService = new CustomerServiceImpl();
+
+
+    private int customerIncomeBracketStart;
+    private int customerIncomeBracketEnd;
 
     private String customerName;
     private Gender customerGender;
@@ -39,7 +43,9 @@ public class CustomerViewModel {
     private int cacheSize;
     private Customer selectedCustomer;
     private AgeCategory selectedAgeCategory;
-        private Map<Integer, Label> ageCategoryMap = new HashMap<>();
+    private int selectedIncomeBracketStart;
+    private int selectedIncomeBracketEnd;
+    private Map<Integer, Label> ageCategoryMap = new HashMap<>();
     private List<AgeCategory> ageCategoryList = new ArrayList<>();
     private Label ageCategoryLabel;
     private String degreeName;
@@ -74,6 +80,7 @@ public class CustomerViewModel {
             ageCategoryList.add(o);
         }
     }
+
     private void fillAgeCategoryMap() {
         ageCategoryMap.put(0, new Label("child"));
         ageCategoryMap.put(1, new Label("adult"));
@@ -259,6 +266,38 @@ public class CustomerViewModel {
         this.degreeList = degreeList;
     }
 
+    public int getCustomerIncomeBracketStart() {
+        return customerIncomeBracketStart;
+    }
+
+    public void setCustomerIncomeBracketStart(int customerIncomeBracketStart) {
+        this.customerIncomeBracketStart = customerIncomeBracketStart;
+    }
+
+    public int getCustomerIncomeBracketEnd() {
+        return customerIncomeBracketEnd;
+    }
+
+    public void setCustomerIncomeBracketEnd(int customerIncomeBracketEnd) {
+        this.customerIncomeBracketEnd = customerIncomeBracketEnd;
+    }
+
+    public int getSelectedIncomeBracketStart() {
+        return selectedIncomeBracketStart;
+    }
+
+    public void setSelectedIncomeBracketStart(int selectedIncomeBracketStart) {
+        this.selectedIncomeBracketStart = selectedIncomeBracketStart;
+    }
+
+    public int getSelectedIncomeBracketEnd() {
+        return selectedIncomeBracketEnd;
+    }
+
+    public void setSelectedIncomeBracketEnd(int selectedIncomeBracketEnd) {
+        this.selectedIncomeBracketEnd = selectedIncomeBracketEnd;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
@@ -300,16 +339,14 @@ public class CustomerViewModel {
     }
 
 
-
     private static void initFrontend() {
     }
-
 
 
     @Command
     @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
     public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry,selectedAgeCategory,selectedDegree);
+        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry, selectedAgeCategory, selectedDegree, customerIncomeBracketStart, customerIncomeBracketEnd);
         customerService.create(customer);
         loadCustomers();
         this.dialogPage = page;
@@ -367,9 +404,10 @@ public class CustomerViewModel {
         this.dialogPage = page;
 
     }
-       private void fillListboxWithTestParameters() {
+
+    private void fillListboxWithTestParameters() {
         for (int i = 0; i < entityNumberForTest; i++) {
-            customer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country",AgeCategory.CHILD,degrees.get(0))
+            customer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country", AgeCategory.CHILD, degrees.get(0), 100, 200)
             ;
             customerService.create(customer);
         }
@@ -385,7 +423,7 @@ public class CustomerViewModel {
 
     private void loadCustomers() {
         List<Customer> customers = customerService.findAllCustomers();
-        customerList = new CustomerListModel(customers,customerService,cacheSize);
+        customerList = new CustomerListModel(customers, customerService, cacheSize);
     }
 
     private void loadDegrees() {

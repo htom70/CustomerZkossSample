@@ -1,8 +1,7 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?
         ?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')"
-        border="normal" hflex="2" vflex="1" contentStyle="overflow:auto"
->
+        border="normal" hflex="2" vflex="1" contentStyle="overflow:auto">
     <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.showCustomers}"/>
     <vlayout>
 
@@ -10,17 +9,19 @@
                  selectedItem="@bind(vm.selectedCustomer)">
             <listhead>
                 <!--			<listheader label="Id" />-->
-                <listheader align="center" width="16%" label="${labels.name}"/>
-                <listheader align="center" width="16%" label="${labels.gender}"/>
-                <listheader align="center" width="16%" label="${labels.ageCategory}"/>
-                <listheader align="center" width="16%" label="${labels.address}"/>
-                <listheader align="center" width="16%" label="${labels.phoneNumber}"/>
-                <listheader align="center" width="16%" label="${labels.emailAddress}"/>
-                <listheader align="center" width="16%" label="${labels.birthday}"/>
-                <listheader align="center" width="16%" label="${labels.country}"/>
-                <listheader align="center" width="16%" label="${labels.degreeHeader}"/>
-                <listheader align="center" width="16%" label="${labels.edit}"/>
-                <listheader align="center" width="16%" label="${labels.delete}"/>
+                <listheader align="center" width="8%" label="${labels.name}"/>
+                <listheader align="center" width="8%" label="${labels.gender}"/>
+                <listheader align="center" width="8%" label="${labels.ageCategory}"/>
+                <listheader align="center" width="8%" label="${labels.address}"/>
+                <listheader align="center" width="8%" label="${labels.phoneNumber}"/>
+                <listheader align="center" width="8%" label="${labels.emailAddress}"/>
+                <listheader align="center" width="8%" label="${labels.birthday}"/>
+                <listheader align="center" width="8%" label="${labels.country}"/>
+                <listheader align="center" width="8%" label="${labels.degreeHeader}"/>
+                <listheader align="center" width="8%" label="Min"/>
+                <listheader align="center" width="8%" label="Max"/>
+                <listheader align="center" width="8%" label="${labels.edit}"/>
+                <listheader align="center" width="8%" label="${labels.delete}"/>
 
             </listhead>
             <template name="model">
@@ -35,6 +36,8 @@
                     <listcell label="@init(each.birthdayString)"></listcell>
                     <listcell label="@init(each.country)"></listcell>
                     <listcell label="@init(each.degree.degreeName)"></listcell>
+                    <listcell label="@init(each.incomeBracketStart)"></listcell>
+                    <listcell label="@init(each.incomeBracketEnd)"></listcell>
                     <listcell iconSclass="z-icon-fw z-icon-edit"
                               onClick="@command('showDialog', page='/pages/details.zul')"/>
                     <listcell iconSclass="z-icon-fw z-icon-trash" onClick="@command('delete')"/>

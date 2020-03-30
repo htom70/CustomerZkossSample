@@ -89,6 +89,12 @@
                         </combobox>
                     </cell>
                 </row>
+                <row>
+                    <cell sclass="row-title">${labels.formLabelIncomeBracket}</cell>
+                    <cell>
+                        <rangeslider step="100" min="100" max="500" startValue="@bind(vm.customerIncomeBracketStart)" endValue="@bind(vm.customerIncomeBracketEnd)"/>
+                    </cell>
+                </row>
             </rows>
         </grid>
         <div>You are editing<label value="@load(vm.selectedCustomer.name)"/>'s profile.
