@@ -54,6 +54,12 @@
             <groupId>org.zkoss.zk</groupId>
             <artifactId>zkmax</artifactId>
             <version>${zk.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.zkoss.zk</groupId>
+                    <artifactId>zkwebfragment</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.zkoss.zk</groupId>
@@ -70,6 +76,17 @@
             <artifactId>breeze</artifactId>
             <version>${zk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.zkoss.addons</groupId>
+            <artifactId>zk-bootstrap</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zkoss.zk</groupId>
+            <artifactId>zuljsp</artifactId>
+            <version>2.0</version>
+        </dependency>
+
 
         <dependency>
             <groupId>commons-io</groupId>
@@ -101,6 +118,12 @@
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
             <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

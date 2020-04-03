@@ -1,13 +1,15 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window
-        contentStyle="overflow:auto"
-        id="custome_new" mode="modal" visible="true"
+<window viewModel="@id('vm') @init('hu.userrendszerhaz.business.NewCustomerViewModel')"
+
+        id="newCustomerFormId" mode="modal"
         minimizable="false" border="normal" position="center,center" closable="true"
+        onClose="@global-command('showDialog', page='/pages/empty.zul')"
         action="show: slideDown;hide: slideUp"
-        onClose="@command('showDialog', page='/pages/empty.zul')">
+        form="  @id('fx') @load(vm.currentCustomer) @save(vm.currentCustomer, before='save') @validator('hu.userrendszerhaz.validator.FormValidator')"
+        validationMessages="@id('vmsgs')">
     <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.newCustomer}"/>
     <vlayout>
-        <grid width="500px">
+        <grid width="800px">
             <columns>
                 <column align="right" hflex="min"/>
                 <column/>
@@ -16,89 +18,96 @@
                 <row>
                     <cell sclass="row-title">${labels.formLabelName}</cell>
                     <cell>
-                        <textbox value="@save(vm.customerName)" width="200px"
-                                 constraint="no empty: Please enter your full name"/>
+                        <textbox value="@save(fx.name)" width="200px" errorMessage="@load(vmsgs['name'])"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelGender}</cell>
                     <cell>
-                        <radiogroup model="@load(vm.genderList)"
-                                    selectedItem="@save(vm.customerGender)">
+                        <radiogroup model="@load(vm.genderList)" selectedItem="@save(fx.gender)">
                             <template name="model">
                                 <radio label="@load(each.genderType) @converter(vm.stringToLabelConverter)"/>
                             </template>
                         </radiogroup>
                     </cell>
+                    <cell>
+                        <label value="@bind(vmsgs['genderKey'])"/>
+                    </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelAgeCategory}</cell>
-                    <cell><combobox model="@load(vm.ageCategoryList)" selectedItem="@save(vm.selectedAgeCategory)">
-                        <template name="model">
-                            <comboitem label="@load(each.category) @converter(vm.stringToLabelConverter)"/>
-                        </template>
-                    </combobox>
+                    <cell>
+                        <combobox model="@load(vm.ageCategoryList)" selectedItem="@save(fx.ageCategory)"
+                                  errorMessage="@bind(vmsgs['ageKey'])" readonly="true">
+                            <template name="model">
+                                <comboitem label="@load(each.category) @converter(vm.stringToLabelConverter)"/>
+
+                            </template>
+                        </combobox>
+                        <label sclass="warn" value="@load(vmsgs['ageCategoryKey'])"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelAddress}</cell>
                     <cell>
-                        <textbox value="@save(vm.customerAddress)" width="200px"
+                        <textbox value="@save(fx.address)" width="200px"
                                  constraint="no empty: Please enter your Address"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelNamePhoneNumber}</cell>
                     <cell>
-                        <textbox value="@save(vm.customerPhoneNumber)" width="200px"
+                        <textbox value="@save(fx.phoneNumber)" width="200px"
                                  constraint="no empty, /\+([0-9]){11}/ : Please enter an valid Phone Number (+36701234567)"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelEmail}</cell>
                     <cell>
-                        <textbox value="@save(vm.customerEmail)" width="200px"
+                        <textbox value="@save(fx.email)" width="200px"
                                  constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelBirthday}</cell>
                     <cell>
-                        <datebox format="yyyy/MM/dd" value="@save(vm.customerBirthday)" width="200px"
+                        <datebox format="yyyy/MM/dd" value="@save(fx.birthday)" width="200px"
                                  constraint="no future"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelCountry}</cell>
                     <cell>
-                        <listbox model="@load(vm.countryList)" mold="select" width="200px"
-                                 selectedItem="@save(vm.customerCountry)">
+                        <combobox model="@load(vm.countryList)" mold="rounded" width="200px" readonly="true"
+                                  selectedItem="@save(fx.country)">
                             <template name="model">
-                                <listitem label="@load(each)"/>
+                                <comboitem label="@load(each)"/>
                             </template>
-                        </listbox>
+                        </combobox>
                     </cell>
                 </row>
                 <row>
-                            <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
-                            <cell><combobox model="@load(vm.degreeList)" selectedItem="@save(vm.selectedDegree)">
-                                <template name="model">
-                                    <comboitem  label="@load(each.degreeName)"/>
-                                </template>
-                            </combobox>
-                            </cell>
-                </row>
-                <row>
-                    <cell sclass="row-title">${labels.formLabelIncomeBracket}</cell>
+                    <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
                     <cell>
-                        <rangeslider step="100" min="100" max="500" startValue="@save(vm.customerIncomeBracketStart)" endValue="@save(vm.customerIncomeBracketEnd)"/>
+                        <combobox autodrop="true" model="@load(vm.degreeList)" selectedItem="@save(fx.degree)"
+                                  readonly="true">
+                            <template name="model">
+                                <comboitem label="@load(each.degreeName)"/>
+                            </template>
+                        </combobox>
                     </cell>
                 </row>
             </rows>
         </grid>
         <hlayout>
-            <button label="${labels.save}" onClick="@command('save', page='/pages/empty.zul')"/>
-            <button label="${labels.cancel}" onClick="@command('showDialog', page='/pages/empty.zul')"/>
+            <label visible="@load(empty vmsgs)"
+                   value="@load(empty vmsgs ? 'Form successfully submitted!' : '', before='save')"/>
+            <button label="${labels.save}" onClick="@command('save')"/>
+            <button label="${labels.cancel}" onClick="@command('cancel')"/>
+
         </hlayout>
+        <vbox>
+            <captcha id="cpa" length="5" width="200px" height="50px"/>
+        </vbox>
     </vlayout>
 </window>

@@ -9,7 +9,11 @@ import hu.userrendszerhaz.service.CountryInfoService;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.Converter;
 import org.zkoss.bind.annotation.*;
-import org.zkoss.zul.*;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModel;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -17,13 +21,9 @@ import java.util.*;
 
 public class CustomerViewModel {
 
+    private boolean newCustomerFormVisible;
     private DegreeService degreeService = new DegreeServiceImpl();
     private CustomerService customerService = new CustomerServiceImpl();
-
-
-    private int customerIncomeBracketStart;
-    private int customerIncomeBracketEnd;
-
     private String customerName;
     private Gender customerGender;
     private String customerAddress;
@@ -34,7 +34,7 @@ public class CustomerViewModel {
     private AgeCategory customerAgeCategory;
     private String degreeItem;
     private String ageCategoryString;
-    private Customer customer;
+    private Customer currentCustomer;
     private String dialogPage;
     private int pageSize;
     private int listIndex;
@@ -43,8 +43,6 @@ public class CustomerViewModel {
     private int cacheSize;
     private Customer selectedCustomer;
     private AgeCategory selectedAgeCategory;
-    private int selectedIncomeBracketStart;
-    private int selectedIncomeBracketEnd;
     private Map<Integer, Label> ageCategoryMap = new HashMap<>();
     private List<AgeCategory> ageCategoryList = new ArrayList<>();
     private Label ageCategoryLabel;
@@ -65,12 +63,20 @@ public class CustomerViewModel {
         this.typeFromOuter = typeFromOuter;
     }
 
+    public boolean isNewCustomerFormVisible() {
+        return newCustomerFormVisible;
+    }
+
+    public void setNewCustomerFormVisible(boolean newCustomerFormVisible) {
+        this.newCustomerFormVisible = newCustomerFormVisible;
+    }
+
     @Init
     public void init(@ExecutionArgParam("type") String type) {
+        currentCustomer = new Customer();
         pageSize = 5;
-        typeFromOuter = type;
+//        typeFromOuter = type;
         fillAgeCategoryList();
-        fillAgeCategoryMap();
         loadCustomers();
         loadDegrees();
     }
@@ -81,19 +87,6 @@ public class CustomerViewModel {
         }
     }
 
-    private void fillAgeCategoryMap() {
-        ageCategoryMap.put(0, new Label("child"));
-        ageCategoryMap.put(1, new Label("adult"));
-        ageCategoryMap.put(2, new Label("retired"));
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
 
     public Gender getCustomerGender() {
         return customerGender;
@@ -135,12 +128,12 @@ public class CustomerViewModel {
         this.selectedCustomer = selectedCustomer;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCurrentCustomer() {
+        return currentCustomer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCurrentCustomer(Customer currentCustomer) {
+        this.currentCustomer = currentCustomer;
     }
 
     public String getCustomerEmail() {
@@ -217,11 +210,6 @@ public class CustomerViewModel {
 
     private Listbox customerListbox;
 
-    public List<Gender> getGenderList() {
-        return Arrays.asList(Gender.values());
-    }
-
-
     public List<String> getCountryList() {
         return CountryInfoService.getCountryList();
     }
@@ -264,38 +252,6 @@ public class CustomerViewModel {
 
     public void setDegreeList(ListModel<Degree> degreeList) {
         this.degreeList = degreeList;
-    }
-
-    public int getCustomerIncomeBracketStart() {
-        return customerIncomeBracketStart;
-    }
-
-    public void setCustomerIncomeBracketStart(int customerIncomeBracketStart) {
-        this.customerIncomeBracketStart = customerIncomeBracketStart;
-    }
-
-    public int getCustomerIncomeBracketEnd() {
-        return customerIncomeBracketEnd;
-    }
-
-    public void setCustomerIncomeBracketEnd(int customerIncomeBracketEnd) {
-        this.customerIncomeBracketEnd = customerIncomeBracketEnd;
-    }
-
-    public int getSelectedIncomeBracketStart() {
-        return selectedIncomeBracketStart;
-    }
-
-    public void setSelectedIncomeBracketStart(int selectedIncomeBracketStart) {
-        this.selectedIncomeBracketStart = selectedIncomeBracketStart;
-    }
-
-    public int getSelectedIncomeBracketEnd() {
-        return selectedIncomeBracketEnd;
-    }
-
-    public void setSelectedIncomeBracketEnd(int selectedIncomeBracketEnd) {
-        this.selectedIncomeBracketEnd = selectedIncomeBracketEnd;
     }
 
     public int getPageSize() {
@@ -344,12 +300,12 @@ public class CustomerViewModel {
 
 
     @Command
-    @NotifyChange({"customerList", "customerName", "customerAddress", "customerPhoneNumber", "customerEmail", "customerBirthday", "customerCountry", "dialogPage"})
-    public void save(@BindingParam("page") String page) {
-        customer = new Customer(customerName, customerGender, customerAddress, customerPhoneNumber, customerEmail, customerBirthday, customerCountry, selectedAgeCategory, selectedDegree, customerIncomeBracketStart, customerIncomeBracketEnd);
-        customerService.create(customer);
+    @NotifyChange({"customerList", "dialogPage", "newCustomerFormVisible"})
+    public void save(@BindingParam("page") String page, @ContextParam(ContextType.TRIGGER_EVENT) Event event) {
+        customerService.create(currentCustomer);
         loadCustomers();
-        this.dialogPage = page;
+        event.stopPropagation();
+        newCustomerFormVisible = false;
     }
 
     @Command
@@ -362,10 +318,11 @@ public class CustomerViewModel {
     }
 
 
-    @Command
-    @NotifyChange("customerList")
-    public void read() {
+    @GlobalCommand
+    @NotifyChange({"customerList","dialogPage" })
+    public void refresh() {
         loadCustomers();
+        this.dialogPage="/pages/empty.zul";
     }
 
     @Command
@@ -390,6 +347,24 @@ public class CustomerViewModel {
     }
 
     @Command
+    @NotifyChange("dialogPage")
+    public void showNewCustomerFormInParent(@BindingParam("page") String page) {
+        this.dialogPage = page;
+    }
+
+    @Command
+    @NotifyChange("dialogPage")
+    public void callEditCustomer(@BindingParam("page") String page) {
+        this.dialogPage = page;
+//        Map<String, Object> args = new HashMap<>();
+//        args.put("selected", (Object) selectedCustomer);
+//        BindUtils.postGlobalCommand(null, null, "s", args);
+    }
+
+
+
+
+    @Command
     @NotifyChange({"dialogPage", "customerList"})
     public void saveTestParameters(@BindingParam("page") String page) {
         fillListboxWithTestParameters();
@@ -402,14 +377,14 @@ public class CustomerViewModel {
         Degree degree = new Degree(degreeName);
         degreeService.createDegree(degree);
         this.dialogPage = page;
-
     }
+
 
     private void fillListboxWithTestParameters() {
         for (int i = 0; i < entityNumberForTest; i++) {
-            customer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country", AgeCategory.CHILD, degrees.get(0), 100, 200)
-            ;
-            customerService.create(customer);
+            currentCustomer = new Customer("Test" + i, Gender.MALE, "Test Address", "Test Phone Number" + i, "test@test.hu", new Date(), "Test Country", AgeCategory.CHILD, degrees.get(0));
+
+            customerService.create(currentCustomer);
         }
         loadCustomers();
     }
@@ -430,4 +405,6 @@ public class CustomerViewModel {
         degrees = degreeService.findAllDegrees();
         degreeList = new ListModelList<>(degrees);
     }
+
+
 }

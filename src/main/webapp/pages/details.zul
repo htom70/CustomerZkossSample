@@ -1,9 +1,12 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window
+<window viewModel="@id('vm') @init('hu.userrendszerhaz.business.NewCustomerViewModel')"
 
-        title="Customer modification" visible="true" mode="modal" minimizable="false"
-        border="normal" position="center,center" closable="true" action="show: slideDown;hide: slideUp"
-        onClose="@command('showDialog', page='/pages/empty.zul')">
+        id="newCustomerFormId" mode="modal"
+        minimizable="false" border="normal" position="left,top" closable="true"
+        onClose="@command('cancel')"
+        action="show: slideDown;hide: slideUp"
+        form="  @id('fx') @load(vm.selectedCustomer) @save(vm.selectedCustomer, before='update') @validator('hu.userrendszerhaz.validator.FormValidator')"
+        validationMessages="@id('vmsgs')">
     <vlayout>
         <grid width="500px">
             <columns>
@@ -14,7 +17,7 @@
                 <row>
                     <cell sclass="row-title">${labels.formLabelName}</cell>
                     <cell>
-                        <textbox value="@bind(vm.selectedCustomer.name)" width="200px"
+                        <textbox value="@bind(fx.name)" width="200px"
                                  constraint="no empty: Plean enter your full name"/>
                     </cell>
                 </row>
@@ -22,7 +25,7 @@
                     <cell sclass="row-title">${labels.formLabelGender}</cell>
                     <cell>
                         <radiogroup model="@load(vm.genderList)"
-                                    selectedItem="@bind(vm.selectedCustomer.gender)">
+                                    selectedItem="@bind(fx.gender)">
                             <template name="model">
                                 <radio label="@bind(each.genderType) @converter(vm.stringToLabelConverter)"/>
                             </template>
@@ -33,7 +36,7 @@
                     <cell sclass="row-title">${labels.formLabelAgeCategory}</cell>
                     <cell>
                         <combobox model="@load(vm.ageCategoryList)"
-                                  selectedItem="@bind(vm.selectedCustomer.ageCategory)">
+                                  selectedItem="@bind(fx.ageCategory)">
                             <template name="model">
                                 <comboitem label="@bind(each.category) @converter(vm.stringToLabelConverter)"/>
                             </template>
@@ -43,56 +46,51 @@
                 <row>
                     <cell sclass="row-title">${labels.formLabelAddress}</cell>
                     <cell>
-                        <textbox value="@bind(vm.selectedCustomer.address)" width="200px"
+                        <textbox value="@bind(fx.address)" width="200px"
                                  constraint="no empty: Please enter your Address"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelNamePhoneNumber}</cell>
                     <cell>
-                        <textbox value="@bind(vm.selectedCustomer.phoneNumber)" width="200px"
+                        <textbox value="@bind(fx.phoneNumber)" width="200px"
                                  constraint="no empty, /\+([0-9]){11}/ : Please enter an valid Phone Number (+36701234567)"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelEmail}</cell>
                     <cell>
-                        <textbox value="@bind(vm.selectedCustomer.email)" width="200px"
+                        <textbox value="@bind(fx.email)" width="200px"
                                  constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelBirthday}</cell>
                     <cell>
-                        <datebox format="yyyy/MM/dd" value="@bind(vm.selectedCustomer.birthday)" width="200px"
+                        <datebox format="yyyy/MM/dd" value="@bind(fx.birthday)" width="200px"
                                  constraint="no future"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">${labels.formLabelCountry}</cell>
                     <cell>
-                        <listbox model="@load(vm.countryList)" mold="select" width="200px"
-                                 selectedItem="@bind(vm.selectedCustomer.country)">
+                        <combobox model="@load(vm.countryList)" mold="rounded" width="200px"
+                                 selectedItem="@bind(fx.country)" readonly="true">
                             <template name="model">
-                                <listitem label="@load(each)"/>
-                            </template>
-                        </listbox>
-                    </cell>
-                </row>
-                <row>
-                    <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
-                    <cell>
-                        <combobox model="@load(vm.degreeList)" selectedItem="@bind(vm.selectedCustomer.degree)">
-                            <template name="model">
-                                <comboitem label="@load(each.degreeName)"/>
+                                <comboitem label="@load(each)"/>
                             </template>
                         </combobox>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">${labels.formLabelIncomeBracket}</cell>
+                    <cell sclass="row-title">${labels.formLabelDegreeName}</cell>
                     <cell>
-                        <rangeslider step="100" min="100" max="500" startValue="@bind(vm.customerIncomeBracketStart)" endValue="@bind(vm.customerIncomeBracketEnd)"/>
+                        <combobox model="@load(vm.degreeList)" mold="rounded" width="200px"
+                                  selectedItem="@bind(fx.degree)" readonly="true">
+                            <template name="model">
+                                <comboitem label="@load(each.degreeName)"/>
+                            </template>
+                        </combobox>
                     </cell>
                 </row>
             </rows>
@@ -100,8 +98,8 @@
         <div>You are editing<label value="@load(vm.selectedCustomer.name)"/>'s profile.
         </div>
         <hlayout>
-            <button label="Save" onClick="@command('update', page='/pages/empty.zul')"/>
-            <button label="Cancel" onClick="@command('showDialog', page='/pages/empty.zul')"/>
+            <button label="${labels.save}" onClick="@command('update')"/>
+            <button label="${labels.cancel}" onClick="@command('cancel')"/>
         </hlayout>
     </vlayout>
 </window>

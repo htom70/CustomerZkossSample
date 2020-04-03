@@ -1,11 +1,12 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?
         ?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
 <window viewModel="@id('vm') @init('hu.userrendszerhaz.business.CustomerViewModel')"
-        border="normal" hflex="2" vflex="1" contentStyle="overflow:auto">
+        border="normal" hflex="2" vflex="1" contentStyle="overflow:auto"
+>
     <caption src="/imgs/profile.png" sclass="fn-caption" label="${labels.showCustomers}"/>
     <vlayout>
-
-        <listbox width="100%" rows="@load(vm.pageSize)" model="@load(vm.customerList)" emptyMessage="No Customer found in the result"
+        <listbox width="100%" rows="@load(vm.pageSize)" model="@load(vm.customerList)"
+                 emptyMessage="No Customer found in the result"
                  selectedItem="@bind(vm.selectedCustomer)">
             <listhead>
                 <!--			<listheader label="Id" />-->
@@ -18,8 +19,6 @@
                 <listheader align="center" width="8%" label="${labels.birthday}"/>
                 <listheader align="center" width="8%" label="${labels.country}"/>
                 <listheader align="center" width="8%" label="${labels.degreeHeader}"/>
-                <listheader align="center" width="8%" label="Min"/>
-                <listheader align="center" width="8%" label="Max"/>
                 <listheader align="center" width="8%" label="${labels.edit}"/>
                 <listheader align="center" width="8%" label="${labels.delete}"/>
 
@@ -36,10 +35,8 @@
                     <listcell label="@init(each.birthdayString)"></listcell>
                     <listcell label="@init(each.country)"></listcell>
                     <listcell label="@init(each.degree.degreeName)"></listcell>
-                    <listcell label="@init(each.incomeBracketStart)"></listcell>
-                    <listcell label="@init(each.incomeBracketEnd)"></listcell>
                     <listcell iconSclass="z-icon-fw z-icon-edit"
-                              onClick="@command('showDialog', page='/pages/details.zul')"/>
+                              onClick="@command('callEditCustomer', page='/pages/details.zul') @global-command('settingSelectedCustomer', item=vm.selectedCustomer)"/>
                     <listcell iconSclass="z-icon-fw z-icon-trash" onClick="@command('delete')"/>
                 </listitem>
             </template>
@@ -47,12 +44,14 @@
     </vlayout>
     <hbox style="margin-top:20px">
         <hbox>
-            <button label="${labels.addCustomer}" onClick="@command('showDialog', page='/pages/new.zul')"/>
+            <button label="${labels.addCustomer}" onClick="@command('showNewCustomerFormInParent', page='/pages/new.zul')"/>
             <button label="${labels.deleteAllCustomers}" onClick="@command('deleteAll')"/>
-            <button label="${labels.testParameter}" onClick="@command('showDialog', page='/pages/input-test-parameter-for-list-pagination.zul')"/>
+            <button label="${labels.testParameter}"
+                    onClick="@command('showDialog', page='/pages/input-test-parameter-for-list-pagination.zul')"/>
             <button label="${labels.inputDegree}" onClick="@command('showDialog', page='/pages/new-degree.zul')"/>
         </hbox>
     </hbox>
+
     <include id="dialoginclude" src="@load(vm.dialogPage)"/>
-    <include type="outerPageLiteralValue" src="/pages/inner.zul"/>
+    <!--    <include type="outerPageLiteralValue" src="/pages/inner.zul"/>-->
 </window>
