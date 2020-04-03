@@ -9,7 +9,6 @@
                  emptyMessage="No Customer found in the result"
                  selectedItem="@bind(vm.selectedCustomer)">
             <listhead>
-                <!--			<listheader label="Id" />-->
                 <listheader align="center" width="8%" label="${labels.name}"/>
                 <listheader align="center" width="8%" label="${labels.gender}"/>
                 <listheader align="center" width="8%" label="${labels.ageCategory}"/>
@@ -21,11 +20,9 @@
                 <listheader align="center" width="8%" label="${labels.degreeHeader}"/>
                 <listheader align="center" width="8%" label="${labels.edit}"/>
                 <listheader align="center" width="8%" label="${labels.delete}"/>
-
             </listhead>
             <template name="model">
                 <listitem>
-                    <!--				<listcell>$<label value="@init(each.Id)" />l</listcell>-->
                     <listcell label="@init(each.name)"></listcell>
                     <listcell label="@init(each.gender.genderType) @converter(vm.stringToLabelConverter)"></listcell>
                     <listcell label="@init(each.ageCategory.category) @converter(vm.stringToLabelConverter)"></listcell>
@@ -36,7 +33,7 @@
                     <listcell label="@init(each.country)"></listcell>
                     <listcell label="@init(each.degree.degreeName)"></listcell>
                     <listcell iconSclass="z-icon-fw z-icon-edit"
-                              onClick="@command('callEditCustomer', page='/pages/details.zul') @global-command('settingSelectedCustomer', item=vm.selectedCustomer)"/>
+                              onClick="@command('callEditCustomer', page='/pages/details.zul') "/>
                     <listcell iconSclass="z-icon-fw z-icon-trash" onClick="@command('delete')"/>
                 </listitem>
             </template>
@@ -51,7 +48,5 @@
             <button label="${labels.inputDegree}" onClick="@command('showDialog', page='/pages/new-degree.zul')"/>
         </hbox>
     </hbox>
-
-    <include id="dialoginclude" src="@load(vm.dialogPage)"/>
-    <!--    <include type="outerPageLiteralValue" src="/pages/inner.zul"/>-->
+    <include id="dialoginclude" arg="@load(vm.selectedCustomer)" src="@load(vm.dialogPage)"/>
 </window>

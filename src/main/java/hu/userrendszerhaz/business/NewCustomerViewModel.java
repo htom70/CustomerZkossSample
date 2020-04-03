@@ -16,7 +16,6 @@ import org.zkoss.zul.ListModelList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class NewCustomerViewModel {
 
@@ -111,8 +110,11 @@ public class NewCustomerViewModel {
     }
 
     @Init
-    public void init() {
+    public void init(@ExecutionArgParam("arg") Customer arg) {
         currentCustomer = new Customer();
+        if (arg != null) {
+            selectedCustomer = arg;
+        }
         fillAgeCategoryList();
         loadDegrees();
     }
